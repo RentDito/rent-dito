@@ -23,6 +23,7 @@ export interface RentDitoRepository {
   listPayments(): Promise<Payment[]>;
   listInquiries(role: UserRole): Promise<Inquiry[]>;
   submitInquiry(input: { propertyId: string; message: string }): Promise<Inquiry>;
+  replyToInquiry(input: { inquiryId: string; reply: string }): Promise<Inquiry>;
   updateUnitStatus(input: { unitId: string; status: UnitStatus }): Promise<Unit>;
   recordPayment(input: {
     dueId: string;

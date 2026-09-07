@@ -114,6 +114,19 @@ export class MockRentDitoRepository implements RentDitoRepository {
     return clone(inquiry);
   }
 
+  async replyToInquiry(input: { inquiryId: string; reply: string }): Promise<Inquiry> {
+    await this.wait();
+    const inquiry = this.data.inquiries.find((candidate) => candidate.id === input.inquiryId);
+    if (!inquiry) throw new Error('Inquiry not found.');
+    const reply = input.reply.trim();
+    if (!reply) throw new Error('Please enter a reply.');
+    inquiry.reply = reply;
+    inquiry.repliedAt = new Date().toISOString();
+    inquiry.status = 'replied';
+    this.persist();
+    return clone(inquiry);
+  }
+
   async updateUnitStatus(input: { unitId: string; status: UnitStatus }): Promise<Unit> {
     await this.wait();
     const unit = this.findUnit(input.unitId);

@@ -18,3 +18,6 @@ export interface Payment {
   source: 'landlord' | 'tenant';
   recordedAt: string;
 }
+
+/** Amount still owed on a due. */
+export const remainingOn = (due: Due) => due.amount - due.paidAmount;

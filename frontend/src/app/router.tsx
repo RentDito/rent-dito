@@ -4,8 +4,12 @@ import type { RouteObject } from 'react-router-dom';
 import { PublicLayout } from '@/app/layouts/PublicLayout';
 import { WorkspaceLayout } from '@/app/layouts/WorkspaceLayout';
 import LandlordDashboardPage from '@/pages/landlord/LandlordDashboardPage';
+import LandlordInquiriesPage from '@/pages/landlord/LandlordInquiriesPage';
+import LandlordPaymentsPage from '@/pages/landlord/LandlordPaymentsPage';
 import PropertiesPage from '@/pages/landlord/PropertiesPage';
 import PropertyDetailPage from '@/pages/landlord/PropertyDetailPage';
+import TenantDetailPage from '@/pages/landlord/TenantDetailPage';
+import TenantsPage from '@/pages/landlord/TenantsPage';
 import HomePage from '@/pages/marketplace/HomePage';
 import ListingDetailPage from '@/pages/marketplace/ListingDetailPage';
 import ListingsPage from '@/pages/marketplace/ListingsPage';
@@ -64,13 +68,10 @@ export const appRoutes: RouteObject[] = [
       { path: routes.landlord.overview, element: <LandlordDashboardPage /> },
       { path: routes.landlord.properties, element: <PropertiesPage /> },
       { path: routePatterns.landlordPropertyDetail, element: <PropertyDetailPage /> },
-      { path: routes.landlord.tenants, element: <PlaceholderPage title="Tenants" /> },
-      {
-        path: routePatterns.landlordTenantDetail,
-        element: <PlaceholderPage title="Tenant record" />,
-      },
-      { path: routes.landlord.payments, element: <PlaceholderPage title="Payments" /> },
-      { path: routes.landlord.inquiries, element: <PlaceholderPage title="Inquiries" /> },
+      { path: routes.landlord.tenants, element: <TenantsPage /> },
+      { path: routePatterns.landlordTenantDetail, element: <TenantDetailPage /> },
+      { path: routes.landlord.payments, element: <LandlordPaymentsPage /> },
+      { path: routes.landlord.inquiries, element: <LandlordInquiriesPage /> },
     ],
   },
   {
