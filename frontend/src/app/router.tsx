@@ -3,6 +3,9 @@ import type { RouteObject } from 'react-router-dom';
 
 import { PublicLayout } from '@/app/layouts/PublicLayout';
 import { WorkspaceLayout } from '@/app/layouts/WorkspaceLayout';
+import LandlordDashboardPage from '@/pages/landlord/LandlordDashboardPage';
+import PropertiesPage from '@/pages/landlord/PropertiesPage';
+import PropertyDetailPage from '@/pages/landlord/PropertyDetailPage';
 import HomePage from '@/pages/marketplace/HomePage';
 import ListingDetailPage from '@/pages/marketplace/ListingDetailPage';
 import ListingsPage from '@/pages/marketplace/ListingsPage';
@@ -58,12 +61,9 @@ export const appRoutes: RouteObject[] = [
     element: <WorkspaceLayout workspace="landlord" />,
     errorElement: <RouteErrorFallback />,
     children: [
-      { path: routes.landlord.overview, element: <PlaceholderPage title="Portfolio overview" /> },
-      { path: routes.landlord.properties, element: <PlaceholderPage title="Properties" /> },
-      {
-        path: routePatterns.landlordPropertyDetail,
-        element: <PlaceholderPage title="Property details" />,
-      },
+      { path: routes.landlord.overview, element: <LandlordDashboardPage /> },
+      { path: routes.landlord.properties, element: <PropertiesPage /> },
+      { path: routePatterns.landlordPropertyDetail, element: <PropertyDetailPage /> },
       { path: routes.landlord.tenants, element: <PlaceholderPage title="Tenants" /> },
       {
         path: routePatterns.landlordTenantDetail,

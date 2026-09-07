@@ -2,7 +2,7 @@ import type { Inquiry } from '@/entities/inquiry/model';
 import type { Due, Payment } from '@/entities/payment/model';
 import type { Property } from '@/entities/property/model';
 import type { Tenancy } from '@/entities/tenancy/model';
-import type { User } from '@/entities/user/model';
+import { DEMO_LANDLORD_ID, DEMO_TENANT_ID, type User } from '@/entities/user/model';
 
 export interface DemoData {
   users: User[];
@@ -14,8 +14,8 @@ export interface DemoData {
 }
 
 export const DEMO_DATA_VERSION = 2;
-export const CURRENT_TENANT_ID = 'user-tenant-01';
-export const CURRENT_LANDLORD_ID = 'user-landlord-01';
+export const CURRENT_TENANT_ID = DEMO_TENANT_ID;
+export const CURRENT_LANDLORD_ID = DEMO_LANDLORD_ID;
 
 /** Locally generated illustrations, so listings render offline. */
 const image = (name: string) => `/properties/${name}.svg`;

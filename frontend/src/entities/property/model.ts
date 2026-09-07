@@ -1,3 +1,5 @@
+import type { Tone } from '@/shared/types/status';
+
 export type PropertyType = 'apartment' | 'condominium' | 'house' | 'bedspace';
 
 export type UnitStatus = 'available' | 'occupied' | 'reserved' | 'maintenance';
@@ -54,3 +56,28 @@ export const bedroomRange = (property: Property) => {
   const high = Math.max(...bedrooms);
   return low === high ? `${low}` : `${low}–${high}`;
 };
+
+/** One presentation contract for unit status, shared by every surface. */
+export const UNIT_STATUS_LABELS: Record<UnitStatus, string> = {
+  available: 'Available',
+  occupied: 'Occupied',
+  reserved: 'Reserved',
+  maintenance: 'Maintenance',
+};
+
+export const UNIT_STATUS_TONES: Record<UnitStatus, Tone> = {
+  available: 'success',
+  occupied: 'neutral',
+  reserved: 'warning',
+  maintenance: 'info',
+};
+
+/** Plain-language effect of each status, shown before a landlord confirms. */
+export const UNIT_STATUS_CONSEQUENCES: Record<UnitStatus, string> = {
+  available: 'The unit appears in public search results and can receive inquiries.',
+  occupied: 'The unit is hidden from search and counts towards occupancy.',
+  reserved: 'The unit is hidden from search and held for a specific tenant.',
+  maintenance: 'The unit is hidden from search and excluded from expected rent.',
+};
+
+export const UNIT_STATUS_ORDER: UnitStatus[] = ['available', 'reserved', 'occupied', 'maintenance'];

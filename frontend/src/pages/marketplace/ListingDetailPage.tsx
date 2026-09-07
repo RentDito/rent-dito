@@ -4,7 +4,12 @@ import { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 
 import { rentDitoRepository } from '@/app/repositories';
-import { availableUnits, startingRent } from '@/entities/property/model';
+import {
+  availableUnits,
+  startingRent,
+  UNIT_STATUS_LABELS,
+  UNIT_STATUS_TONES,
+} from '@/entities/property/model';
 import { InquiryForm } from '@/features/inquiry/InquiryForm';
 import { listingKeys } from '@/features/listing-search/useListingSearch';
 import { SaveListingButton } from '@/features/saved-listings/SaveListingButton';
@@ -18,20 +23,6 @@ import { Skeleton } from '@/shared/ui/Skeleton/Skeleton';
 import { StatusBadge } from '@/shared/ui/StatusBadge/StatusBadge';
 
 import styles from './marketplace.module.css';
-
-const UNIT_STATUS_TONES = {
-  available: 'success',
-  occupied: 'neutral',
-  reserved: 'warning',
-  maintenance: 'info',
-} as const;
-
-const UNIT_STATUS_LABELS = {
-  available: 'Available',
-  occupied: 'Occupied',
-  reserved: 'Reserved',
-  maintenance: 'Under maintenance',
-} as const;
 
 const TYPE_LABELS = {
   apartment: 'Apartment',

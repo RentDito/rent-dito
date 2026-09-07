@@ -1,0 +1,195 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.pageHeader {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.pageContext {
+  max-inline-size: 46rem;
+  margin-block-start: var(--space-2);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-supporting);
+}
+
+.primaryAction {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-block-size: var(--touch-target-min);
+  padding-inline: var(--space-5);
+  border-radius: var(--radius-control);
+  background: var(--color-brand-primary);
+  color: var(--color-brand-on-primary);
+  font-size: var(--font-size-supporting);
+  font-weight: var(--font-weight-semibold);
+  text-decoration: none;
+}
+
+.primaryAction:hover {
+  background: var(--color-brand-deep);
+}
+
+.cardLink,
+.tableLink {
+  color: var(--color-brand-deep);
+  font-size: var(--font-size-supporting);
+  font-weight: var(--font-weight-semibold);
+}
+
+.breadcrumbs {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-supporting);
+}
+
+.breadcrumbs a {
+  color: var(--color-brand-deep);
+}
+
+.statGrid {
+  display: grid;
+  gap: var(--space-4);
+  grid-template-columns: repeat(auto-fit, minmax(min(15rem, 100%), 1fr));
+}
+
+.filterBar {
+  display: grid;
+  gap: var(--space-3);
+  grid-template-columns: repeat(auto-fit, minmax(min(15rem, 100%), 1fr));
+  padding: var(--space-5) var(--space-5) 0;
+}
+
+.filterField {
+  min-inline-size: 0;
+}
+
+.recordCount {
+  padding: var(--space-4) var(--space-5) 0;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-supporting);
+  font-weight: var(--font-weight-medium);
+}
+
+.badgeRow {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  justify-content: flex-end;
+}
+
+.attentionList,
+.unitList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.attentionRow,
+.unitRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card-sm);
+}
+
+.attentionTitle,
+.unitName {
+  font-weight: var(--font-weight-semibold);
+}
+
+.attentionMeta,
+.unitMeta {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-caption);
+}
+
+.attentionAside,
+.unitAside {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  align-items: flex-end;
+}
+
+.attentionAmount {
+  font-size: 1.0625rem;
+  font-weight: var(--font-weight-bold);
+}
+
+.detailGrid {
+  display: grid;
+  gap: var(--space-4);
+  grid-template-columns: repeat(auto-fit, minmax(min(20rem, 100%), 1fr));
+  align-items: start;
+}
+
+.factList {
+  display: grid;
+  gap: var(--space-4);
+  grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+  margin: 0;
+}
+
+.factList dt {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-caption);
+}
+
+.factList dd {
+  margin: var(--space-1) 0 0;
+  font-weight: var(--font-weight-semibold);
+}
+
+.tagList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tag {
+  padding: var(--space-1) var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  background: var(--color-canvas);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-caption);
+}
+
+.ruleList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin: 0;
+  padding-inline-start: var(--space-5);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-supporting);
+}
+
+@media (max-width: 47.99rem) {
+  .attentionAside,
+  .unitAside {
+    align-items: stretch;
+    inline-size: 100%;
+  }
+
+  .badgeRow {
+    justify-content: flex-start;
+  }
+}

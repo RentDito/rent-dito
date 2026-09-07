@@ -1,0 +1,43 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.context {
+  display: grid;
+  gap: var(--space-3);
+  grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
+  margin: 0;
+  padding: var(--space-4);
+  border-radius: var(--radius-card-sm);
+  background: var(--color-canvas);
+}
+
+.context dt {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-caption);
+}
+
+.context dd {
+  margin: var(--space-1) 0 0;
+  font-size: var(--font-size-supporting);
+  font-weight: var(--font-weight-semibold);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  justify-content: flex-end;
+}
+
+@media (max-width: 30rem) {
+  .actions {
+    flex-direction: column-reverse;
+  }
+
+  .actions > * {
+    inline-size: 100%;
+  }
+}
