@@ -1,0 +1,70 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  inline-size: 100%;
+  max-inline-size: 48rem;
+}
+
+.pageHeader {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.pageContext {
+  max-inline-size: 42rem;
+  margin-block-start: var(--space-2);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-supporting);
+}
+
+.facts {
+  display: grid;
+  gap: var(--space-4);
+  grid-template-columns: repeat(auto-fit, minmax(min(12rem, 100%), 1fr));
+  margin: 0;
+}
+
+.facts dt {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-caption);
+}
+
+.facts dd {
+  margin: var(--space-1) 0 0;
+  font-size: var(--font-size-supporting);
+  font-weight: var(--font-weight-semibold);
+}
+
+.note {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-supporting);
+}
+
+.offlinePage {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  inline-size: 100%;
+  max-inline-size: 40rem;
+  margin-inline: auto;
+}
+
+.offlineList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin: 0;
+  padding-inline-start: var(--space-5);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-supporting);
+}
+
+.offlineActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}

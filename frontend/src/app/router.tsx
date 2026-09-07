@@ -1,6 +1,7 @@
 import { Link, createBrowserRouter, isRouteErrorResponse, useRouteError } from 'react-router-dom';
 import type { RouteObject } from 'react-router-dom';
 
+import { useDemoSession } from '@/app/demo/demoSessionContext';
 import { PublicLayout } from '@/app/layouts/PublicLayout';
 import { WorkspaceLayout } from '@/app/layouts/WorkspaceLayout';
 import LandlordDashboardPage from '@/pages/landlord/LandlordDashboardPage';
@@ -21,7 +22,10 @@ import TenantDashboardPage from '@/pages/tenant/TenantDashboardPage';
 import TenantInquiriesPage from '@/pages/tenant/TenantInquiriesPage';
 import TenantPaymentsPage from '@/pages/tenant/TenantPaymentsPage';
 import NotFoundPage from '@/pages/NotFoundPage';
-import { PlaceholderPage } from '@/pages/PlaceholderPage';
+import OfflinePage from '@/pages/OfflinePage';
+import RegisterPage from '@/pages/auth/RegisterPage';
+import SettingsPage from '@/pages/SettingsPage';
+import SignInPage from '@/pages/auth/SignInPage';
 import { routePatterns, routes } from '@/shared/lib/routes';
 import { Button } from '@/shared/ui/Button/Button';
 import { EmptyState } from '@/shared/ui/Feedback/Feedback';
@@ -51,7 +55,22 @@ const RouteErrorFallback = () => {
   );
 };
 
+/**
+ * Shell for routes that belong to whoever is viewing: a landlord and a tenant
+ * each keep their own workspace navigation, and a guest stays on the public
+ * shell.
+ */
+const RoleShell = () => {
+  const { role } = useDemoSession();
+  return role === 'guest' ? <PublicLayout /> : <WorkspaceLayout workspace={role} />;
+};
+
 export const appRoutes: RouteObject[] = [
+  {
+    element: <RoleShell />,
+    errorElement: <RouteErrorFallback />,
+    children: [{ path: routes.settings, element: <SettingsPage /> }],
+  },
   {
     element: <PublicLayout />,
     errorElement: <RouteErrorFallback />,
@@ -60,10 +79,9 @@ export const appRoutes: RouteObject[] = [
       { path: routes.listings, element: <ListingsPage /> },
       { path: routePatterns.listingDetail, element: <ListingDetailPage /> },
       { path: routes.saved, element: <SavedPage /> },
-      { path: routes.signIn, element: <PlaceholderPage title="Prototype sign-in" /> },
-      { path: routes.register, element: <PlaceholderPage title="Create a prototype account" /> },
-      { path: routes.settings, element: <PlaceholderPage title="Settings" /> },
-      { path: routes.offline, element: <PlaceholderPage title="You are offline" /> },
+      { path: routes.signIn, element: <SignInPage /> },
+      { path: routes.register, element: <RegisterPage /> },
+      { path: routes.offline, element: <OfflinePage /> },
       { path: '*', element: <NotFoundPage /> },
     ],
   },

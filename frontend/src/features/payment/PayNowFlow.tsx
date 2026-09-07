@@ -90,6 +90,12 @@ export const PayNowFlow = ({ due, tenancy, property, unit }: PayNowFlowProps) =>
         this device so you can see how a receipt would look.
       </InlineAlert>
 
+      {!isOnline ? (
+        <InlineAlert tone="warning" title="Reconnect to continue this simulated payment">
+          {OFFLINE_ACTION_MESSAGE}
+        </InlineAlert>
+      ) : null}
+
       <p className={styles.stepLabel}>{STEP_LABELS[step]}</p>
 
       <Card title="Payment summary">
@@ -214,12 +220,6 @@ export const PayNowFlow = ({ due, tenancy, property, unit }: PayNowFlowProps) =>
               {(pay.error as Error | null)?.message ??
                 'The simulated payment did not go through.'}{' '}
               Your balance is unchanged and you can try again.
-            </InlineAlert>
-          ) : null}
-
-          {!isOnline ? (
-            <InlineAlert tone="warning" title="Reconnect to continue this simulated payment">
-              {OFFLINE_ACTION_MESSAGE}
             </InlineAlert>
           ) : null}
 

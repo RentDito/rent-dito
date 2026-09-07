@@ -10,6 +10,7 @@ import { rentDitoRepository } from '@/app/repositories';
 afterEach(() => {
   cleanup();
   window.localStorage.clear();
+  setNavigatorOnline(true);
   // The repository is a module singleton with in-memory state, so clearing
   // storage alone would leave one test's mutations visible to the next.
   rentDitoRepository.resetDemoData();
@@ -52,6 +53,15 @@ window.matchMedia = (query: string): MediaQueryList => {
 
   return list;
 };
+
+/** Test helper: simulate losing or regaining the network connection. */
+export function setNavigatorOnline(online: boolean): void {
+  Object.defineProperty(window.navigator, 'onLine', {
+    configurable: true,
+    get: () => online,
+  });
+  window.dispatchEvent(new Event(online ? 'online' : 'offline'));
+}
 
 /** Test helper: resize the simulated viewport and notify media-query subscribers. */
 export function setViewportWidth(width: number): void {
