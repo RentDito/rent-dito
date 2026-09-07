@@ -182,10 +182,16 @@
   font-size: var(--font-size-supporting);
 }
 
-@media (max-width: 47.99rem) {
+@media (max-width: 63.99rem) {
+  /* Stack the record aside, but let badges keep their intrinsic width. */
   .attentionAside,
   .unitAside {
-    align-items: stretch;
+    align-items: flex-start;
+    inline-size: 100%;
+  }
+
+  .attentionAside > button,
+  .unitAside > button {
     inline-size: 100%;
   }
 

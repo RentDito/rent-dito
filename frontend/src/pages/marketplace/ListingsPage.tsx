@@ -14,7 +14,7 @@ import styles from './marketplace.module.css';
 
 const ListingsPage = () => {
   const {
-    searchParams,
+    formValues,
     hasFilters,
     appliedFilters,
     applyFilters,
@@ -26,17 +26,9 @@ const ListingsPage = () => {
   const isCompact = useIsCompact();
   const [filtersOpen, setFiltersOpen] = useState(false);
 
-  const values = {
-    q: searchParams.get('q') ?? '',
-    city: searchParams.get('city') ?? '',
-    type: searchParams.get('type') ?? '',
-    minRent: searchParams.get('minRent') ?? '',
-    maxRent: searchParams.get('maxRent') ?? '',
-  };
-
   const filterForm = (
     <ListingFilters
-      values={values}
+      values={formValues}
       appliedFilters={appliedFilters}
       onApply={applyFilters}
       onRemove={removeFilter}

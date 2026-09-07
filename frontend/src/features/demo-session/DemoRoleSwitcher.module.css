@@ -19,7 +19,8 @@
 }
 
 .current {
-  color: var(--color-text-secondary);
+  /* Secondary grey on the brand-soft chip measures 4.36:1, below AA. */
+  color: var(--color-brand-deep);
   font-weight: var(--font-weight-regular);
 }
 

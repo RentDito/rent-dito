@@ -1,5 +1,5 @@
 import { X } from 'lucide-react';
-import { useEffect, useState, type FormEvent } from 'react';
+import { useState, type FormEvent } from 'react';
 
 import { Button } from '@/shared/ui/Button/Button';
 import { Field } from '@/shared/ui/Field/Field';
@@ -39,9 +39,14 @@ export const ListingFilters = ({
   onApplied,
 }: ListingFiltersProps) => {
   const [draft, setDraft] = useState(values);
+  const [syncedFrom, setSyncedFrom] = useState(values);
 
-  // Applied chips and Clear all change the URL, which is the source of truth.
-  useEffect(() => setDraft(values), [values]);
+  // The URL is the source of truth, so re-sync when it changes — but only then,
+  // otherwise an unrelated re-render would discard what the user is typing.
+  if (values !== syncedFrom) {
+    setSyncedFrom(values);
+    setDraft(values);
+  }
 
   const submit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -106,7 +111,7 @@ export const ListingFilters = ({
       </Field>
 
       <div className={styles.rentRow}>
-        <Field label="Minimum monthly rent" hint="In pesos">
+        <Field label="Minimum rent" hint="Pesos per month">
           <input
             type="number"
             min={0}
@@ -115,7 +120,7 @@ export const ListingFilters = ({
             onChange={(event) => update('minRent')(event.target.value)}
           />
         </Field>
-        <Field label="Maximum monthly rent" hint="In pesos">
+        <Field label="Maximum rent" hint="Pesos per month">
           <input
             type="number"
             min={0}

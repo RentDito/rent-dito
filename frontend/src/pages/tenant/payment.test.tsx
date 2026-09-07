@@ -57,6 +57,8 @@ describe('tenant workspace', () => {
 
     await user.click(await screen.findByRole('button', { name: 'Choose payment method' }));
     await user.click(screen.getByRole('radio', { name: 'GCash demo' }));
+    // The utilities are behind a disclosure, as they are in a real browser.
+    await user.click(screen.getByText('Demo utilities'));
     await user.click(screen.getByRole('checkbox', { name: 'Simulate a failed payment' }));
     await user.click(screen.getByRole('button', { name: 'Review payment' }));
     await user.click(screen.getByRole('button', { name: 'Confirm simulated payment' }));

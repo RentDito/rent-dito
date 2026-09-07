@@ -66,6 +66,18 @@ export function useListingSearch() {
     };
   }, [searchParams]);
 
+  /** The same filters in form-input shape, memoised for stable identity. */
+  const formValues = useMemo(
+    () => ({
+      q: searchParams.get('q') ?? '',
+      city: searchParams.get('city') ?? '',
+      type: searchParams.get('type') ?? '',
+      minRent: searchParams.get('minRent') ?? '',
+      maxRent: searchParams.get('maxRent') ?? '',
+    }),
+    [searchParams],
+  );
+
   const hasFilters = FILTER_PARAM_KEYS.some((key) => Boolean(searchParams.get(key)));
 
   const appliedFilters = useMemo<AppliedFilter[]>(() => {
@@ -130,6 +142,7 @@ export function useListingSearch() {
 
   return {
     filters,
+    formValues,
     searchParams,
     hasFilters,
     appliedFilters,

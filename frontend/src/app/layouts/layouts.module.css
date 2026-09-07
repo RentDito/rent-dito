@@ -327,6 +327,32 @@
   text-align: center;
 }
 
+/* Between the tablet and laptop breakpoints an expanded sidebar leaves the
+   content column too narrow, so the rail always shows icons only. */
+@media (min-width: 48rem) and (max-width: 63.99rem) {
+  .workspaceShell,
+  .workspaceShell[data-sidebar='open'] {
+    grid-template-columns: 4.5rem minmax(0, 1fr);
+  }
+
+  .sidebarLabel {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .sidebarLink {
+    justify-content: center;
+  }
+
+  .sidebarToggle {
+    display: none;
+  }
+}
+
 @media (max-width: 47.99rem) {
   .workspaceShell,
   .workspaceShell[data-sidebar='collapsed'] {
