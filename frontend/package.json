@@ -13,6 +13,7 @@
     "e2e": "playwright test"
   },
   "dependencies": {
+    "@fontsource-variable/inter": "^5.2.7",
     "@hookform/resolvers": "^5.2.2",
     "@tanstack/react-query": "^5.87.4",
     "lucide-react": "^0.544.0",

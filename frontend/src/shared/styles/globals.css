@@ -1,3 +1,4 @@
+@import '@fontsource-variable/inter/wght.css';
 @import './tokens.css';
 
 * {
@@ -28,13 +29,34 @@ textarea {
   font: inherit;
 }
 
-button,
-input:not([type='hidden']),
-select,
-textarea {
-  min-height: var(--touch-target-min);
+:where(
+  button,
+  input:not([type='hidden']),
+  select,
+  textarea,
+  [role='button'],
+  [role='link'],
+  [data-icon-button],
+  [data-navigation-link],
+  nav a[href]
+) {
+  min-inline-size: var(--touch-target-min);
+  min-block-size: var(--touch-target-min);
 }
 
+:where(
+  [role='button'],
+  [role='link'],
+  [data-icon-button],
+  [data-navigation-link],
+  nav a[href]
+) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Inline text links stay inline; mark control-like links explicitly. */
 button,
 [role='button'],
 a[href],
