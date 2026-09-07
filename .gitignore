@@ -1,0 +1,9 @@
+.worktrees/
+.superpowers/
+frontend/node_modules/
+frontend/dist/
+frontend/coverage/
+frontend/playwright-report/
+frontend/test-results/
+*.log
+
