@@ -6,6 +6,7 @@ import { DemoSessionProvider } from '@/app/demo/DemoSessionProvider';
 import type { DemoRole } from '@/app/demo/demoSessionContext';
 import { createQueryClient } from '@/app/queryClient';
 import { createAppRouter } from '@/app/router';
+import { ToastProvider } from '@/shared/ui/Toast/ToastProvider';
 
 export interface AppProps {
   /** Injected by tests so each render gets an isolated cache. */
@@ -20,7 +21,9 @@ export const App = ({ queryClient, initialRole }: AppProps = {}) => {
   return (
     <QueryClientProvider client={client}>
       <DemoSessionProvider initialRole={initialRole}>
-        <RouterProvider router={router} />
+        <ToastProvider>
+          <RouterProvider router={router} />
+        </ToastProvider>
       </DemoSessionProvider>
     </QueryClientProvider>
   );

@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900" role="img">
+  <defs>
+    <linearGradient id="wall" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#E7EBF2"/>
+      <stop offset="1" stop-color="#D3DAE6"/>
+    </linearGradient>
+    <linearGradient id="floor" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#9AA6B8"/>
+      <stop offset="1" stop-color="#7F8CA0"/>
+    </linearGradient>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#BFDBEF"/>
+      <stop offset="1" stop-color="#FFFFFF"/>
+    </linearGradient>
+    <linearGradient id="daylight" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FFFFFF" stop-opacity="0.55"/>
+      <stop offset="0.6" stop-color="#FFFFFF" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="900" fill="url(#sky)"/>
+  <circle cx="980" cy="150" r="90" fill="#FFFFFF" opacity="0.5"/>
+  <rect y="700" width="1200" height="200" fill="url(#floor)"/>
+  <g>
+    <rect x="200" y="330" width="620" height="380" fill="url(#wall)"/>
+    <path d="M170 340 L510 150 L850 340 Z" fill="#B86A00" opacity="0.9"/>
+    <path d="M170 340 L510 150 L850 340 Z" fill="#000000" opacity="0.06"/>
+    <rect x="240" y="400" width="150" height="140" rx="6" fill="#FFFFFF"/>
+    <rect x="254" y="414" width="122" height="112" fill="#BFDBEF"/>
+    <rect x="308" y="414" width="12" height="112" fill="#FFFFFF"/>
+    <rect x="450" y="400" width="150" height="140" rx="6" fill="#FFFFFF"/>
+    <rect x="464" y="414" width="122" height="112" fill="#BFDBEF"/>
+    <rect x="518" y="414" width="12" height="112" fill="#FFFFFF"/>
+    <rect x="660" y="400" width="150" height="140" rx="6" fill="#FFFFFF"/>
+    <rect x="674" y="414" width="122" height="112" fill="#BFDBEF"/>
+    <rect x="728" y="414" width="12" height="112" fill="#FFFFFF"/>
+    <rect x="440" y="580" width="150" height="130" rx="6" fill="#F2D9AE"/>
+    <rect x="456" y="596" width="118" height="114" fill="#7F8CA0" opacity="0.55"/>
+    <circle cx="560" cy="655" r="8" fill="#B86A00"/>
+  </g>
+  <g>
+    <rect x="860" y="470" width="230" height="240" fill="#D3DAE6"/>
+    <rect x="890" y="510" width="80" height="90" rx="4" fill="#FFFFFF"/>
+    <rect x="990" y="510" width="80" height="90" rx="4" fill="#FFFFFF"/>
+    <rect x="890" y="620" width="80" height="90" rx="4" fill="#FFFFFF"/>
+    <rect x="990" y="620" width="80" height="90" rx="4" fill="#FFFFFF"/>
+  </g>
+  <rect x="0" y="700" width="1200" height="26" fill="#7F8CA0" opacity="0.5"/>
+  <g transform="translate(110 700) scale(1.1)">
+    <path d="M0 0 h70 l-8 90 h-54 z" fill="#7F8CA0" opacity="0.85"/>
+    <path d="M35 0 C 10 -50 6 -110 34 -150 C 60 -110 58 -50 35 0 Z" fill="#3B7A4E"/>
+    <path d="M35 -10 C -5 -30 -30 -70 -20 -110 C 22 -96 40 -52 35 -10 Z" fill="#3B7A4E" opacity="0.8"/>
+    <path d="M35 -10 C 75 -30 100 -70 90 -110 C 48 -96 30 -52 35 -10 Z" fill="#3B7A4E" opacity="0.7"/>
+  </g>
+  <g transform="translate(1080 710) scale(0.8)">
+    <path d="M0 0 h70 l-8 90 h-54 z" fill="#7F8CA0" opacity="0.85"/>
+    <path d="M35 0 C 10 -50 6 -110 34 -150 C 60 -110 58 -50 35 0 Z" fill="#3B7A4E"/>
+    <path d="M35 -10 C -5 -30 -30 -70 -20 -110 C 22 -96 40 -52 35 -10 Z" fill="#3B7A4E" opacity="0.8"/>
+    <path d="M35 -10 C 75 -30 100 -70 90 -110 C 48 -96 30 -52 35 -10 Z" fill="#3B7A4E" opacity="0.7"/>
+  </g>
+  <rect width="1200" height="900" fill="url(#daylight)"/>
+</svg>

@@ -1,0 +1,98 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-subtle);
+  transition: box-shadow var(--duration-standard) var(--ease-standard);
+}
+
+.card:hover {
+  box-shadow: var(--shadow-raised);
+}
+
+.media {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  background: var(--color-canvas);
+}
+
+.image {
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+}
+
+.body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-4);
+}
+
+.badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.title {
+  font-size: 1.0625rem;
+  font-weight: var(--font-weight-semibold);
+}
+
+.location,
+.meta,
+.availability {
+  display: flex;
+  gap: var(--space-2);
+  align-items: center;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-supporting);
+}
+
+.availability {
+  font-size: var(--font-size-caption);
+}
+
+.metaIcon {
+  flex-shrink: 0;
+  inline-size: 1rem;
+  block-size: 1rem;
+}
+
+.rent {
+  color: var(--color-text-primary);
+  font-size: 1.25rem;
+  font-weight: var(--font-weight-bold);
+}
+
+.rentPeriod {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-supporting);
+  font-weight: var(--font-weight-regular);
+}
+
+.link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-block-size: var(--touch-target-min);
+  margin-block-start: auto;
+  padding-inline: var(--space-4);
+  border: 1px solid var(--color-brand-border);
+  border-radius: var(--radius-control);
+  background: var(--color-brand-soft);
+  color: var(--color-brand-deep);
+  font-size: var(--font-size-supporting);
+  font-weight: var(--font-weight-semibold);
+  text-decoration: none;
+}
+
+.link:hover {
+  background: var(--color-brand-primary);
+  color: var(--color-brand-on-primary);
+}

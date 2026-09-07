@@ -3,6 +3,10 @@ import type { RouteObject } from 'react-router-dom';
 
 import { PublicLayout } from '@/app/layouts/PublicLayout';
 import { WorkspaceLayout } from '@/app/layouts/WorkspaceLayout';
+import HomePage from '@/pages/marketplace/HomePage';
+import ListingDetailPage from '@/pages/marketplace/ListingDetailPage';
+import ListingsPage from '@/pages/marketplace/ListingsPage';
+import SavedPage from '@/pages/marketplace/SavedPage';
 import NotFoundPage from '@/pages/NotFoundPage';
 import { PlaceholderPage } from '@/pages/PlaceholderPage';
 import { routePatterns, routes } from '@/shared/lib/routes';
@@ -39,10 +43,10 @@ export const appRoutes: RouteObject[] = [
     element: <PublicLayout />,
     errorElement: <RouteErrorFallback />,
     children: [
-      { path: routes.home, element: <PlaceholderPage title="Find your next home" /> },
-      { path: routes.listings, element: <PlaceholderPage title="Browse rentals" /> },
-      { path: routePatterns.listingDetail, element: <PlaceholderPage title="Property details" /> },
-      { path: routes.saved, element: <PlaceholderPage title="Saved listings" /> },
+      { path: routes.home, element: <HomePage /> },
+      { path: routes.listings, element: <ListingsPage /> },
+      { path: routePatterns.listingDetail, element: <ListingDetailPage /> },
+      { path: routes.saved, element: <SavedPage /> },
       { path: routes.signIn, element: <PlaceholderPage title="Prototype sign-in" /> },
       { path: routes.register, element: <PlaceholderPage title="Create a prototype account" /> },
       { path: routes.settings, element: <PlaceholderPage title="Settings" /> },

@@ -17,6 +17,7 @@ export interface RentDitoRepository {
   listProperties(filters?: ListingFilters): Promise<Property[]>;
   getProperty(id: string): Promise<Property | null>;
   toggleSaved(propertyId: string): Promise<boolean>;
+  listSavedPropertyIds(): Promise<string[]>;
   listTenancies(): Promise<Tenancy[]>;
   listDues(): Promise<Due[]>;
   listPayments(): Promise<Payment[]>;

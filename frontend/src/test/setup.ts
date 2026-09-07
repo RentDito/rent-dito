@@ -2,12 +2,17 @@ import '@testing-library/jest-dom/vitest';
 import { cleanup } from '@testing-library/react';
 import { afterEach } from 'vitest';
 
+import { rentDitoRepository } from '@/app/repositories';
+
 // Vitest runs without injected globals, so Testing Library's automatic cleanup
 // is not registered. Unmount explicitly to keep portalled dialogs, drawers, and
 // toasts from leaking into the next test.
 afterEach(() => {
   cleanup();
   window.localStorage.clear();
+  // The repository is a module singleton with in-memory state, so clearing
+  // storage alone would leave one test's mutations visible to the next.
+  rentDitoRepository.resetDemoData();
 });
 
 // jsdom implements no layout engine and no matchMedia. This evaluates the

@@ -69,6 +69,12 @@ export class MockRentDitoRepository implements RentDitoRepository {
     return !wasSaved;
   }
 
+  async listSavedPropertyIds(): Promise<string[]> {
+    await this.wait();
+    const tenant = this.data.users.find((user) => user.id === CURRENT_TENANT_ID);
+    return [...(tenant?.savedPropertyIds ?? [])];
+  }
+
   async listTenancies(): Promise<Tenancy[]> {
     await this.wait();
     return clone(this.data.tenancies);
