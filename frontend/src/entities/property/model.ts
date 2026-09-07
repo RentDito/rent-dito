@@ -34,6 +34,8 @@ export interface Property {
   availableFrom: string;
   /** Landlord facts the marketplace shows as trust cues. */
   landlordName: string;
+  landlordEmail: string;
+  landlordPhone: string;
   landlordVerified: boolean;
   createdAt: string;
 }

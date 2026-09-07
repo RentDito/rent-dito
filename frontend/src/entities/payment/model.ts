@@ -21,3 +21,10 @@ export interface Payment {
 
 /** Amount still owed on a due. */
 export const remainingOn = (due: Due) => due.amount - due.paidAmount;
+
+/**
+ * Human-readable receipt reference derived from the stored payment, so the same
+ * payment always shows the same reference.
+ */
+export const paymentReference = (payment: Payment) =>
+  `RD-${new Date(payment.recordedAt).getFullYear()}-${payment.id.slice(-6).toLocaleUpperCase('en-PH')}`;

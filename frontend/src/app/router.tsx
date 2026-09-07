@@ -14,6 +14,12 @@ import HomePage from '@/pages/marketplace/HomePage';
 import ListingDetailPage from '@/pages/marketplace/ListingDetailPage';
 import ListingsPage from '@/pages/marketplace/ListingsPage';
 import SavedPage from '@/pages/marketplace/SavedPage';
+import CurrentRentalPage from '@/pages/tenant/CurrentRentalPage';
+import PayDuePage from '@/pages/tenant/PayDuePage';
+import ReceiptPage from '@/pages/tenant/ReceiptPage';
+import TenantDashboardPage from '@/pages/tenant/TenantDashboardPage';
+import TenantInquiriesPage from '@/pages/tenant/TenantInquiriesPage';
+import TenantPaymentsPage from '@/pages/tenant/TenantPaymentsPage';
 import NotFoundPage from '@/pages/NotFoundPage';
 import { PlaceholderPage } from '@/pages/PlaceholderPage';
 import { routePatterns, routes } from '@/shared/lib/routes';
@@ -78,12 +84,12 @@ export const appRoutes: RouteObject[] = [
     element: <WorkspaceLayout workspace="tenant" />,
     errorElement: <RouteErrorFallback />,
     children: [
-      { path: routes.tenant.overview, element: <PlaceholderPage title="Your rental at a glance" /> },
-      { path: routes.tenant.rental, element: <PlaceholderPage title="My rental" /> },
-      { path: routes.tenant.payments, element: <PlaceholderPage title="Payments" /> },
-      { path: routePatterns.tenantPayDue, element: <PlaceholderPage title="Pay your due" /> },
-      { path: routePatterns.tenantReceipt, element: <PlaceholderPage title="Payment receipt" /> },
-      { path: routes.tenant.inquiries, element: <PlaceholderPage title="Inquiries" /> },
+      { path: routes.tenant.overview, element: <TenantDashboardPage /> },
+      { path: routes.tenant.rental, element: <CurrentRentalPage /> },
+      { path: routes.tenant.payments, element: <TenantPaymentsPage /> },
+      { path: routePatterns.tenantPayDue, element: <PayDuePage /> },
+      { path: routePatterns.tenantReceipt, element: <ReceiptPage /> },
+      { path: routes.tenant.inquiries, element: <TenantInquiriesPage /> },
     ],
   },
 ];

@@ -41,6 +41,8 @@ const properties: Property[] = [
     imageUrls: [image('makati-condo'), image('pasig-studio')],
     availableFrom: '2026-09-15',
     landlordName: 'Angela Santos',
+    landlordEmail: 'angela.santos@example.test',
+    landlordPhone: '0917 555 0216',
     landlordVerified: true,
     units: [
       {
@@ -95,6 +97,8 @@ const properties: Property[] = [
     imageUrls: [image('quezon-apartment')],
     availableFrom: '2026-10-01',
     landlordName: 'Angela Santos',
+    landlordEmail: 'angela.santos@example.test',
+    landlordPhone: '0917 555 0216',
     landlordVerified: true,
     units: [
       {
@@ -138,6 +142,8 @@ const properties: Property[] = [
     imageUrls: [image('pasig-studio')],
     availableFrom: '2026-09-20',
     landlordName: 'Rodel Bautista',
+    landlordEmail: 'rodel.bautista@example.test',
+    landlordPhone: '0918 555 0471',
     landlordVerified: true,
     units: [
       {
@@ -170,6 +176,8 @@ const properties: Property[] = [
     imageUrls: [image('cebu-house'), image('manila-bedspace')],
     availableFrom: '2026-09-10',
     landlordName: 'Marilou Tabotabo',
+    landlordEmail: 'marilou.tabotabo@example.test',
+    landlordPhone: '0932 555 0088',
     landlordVerified: true,
     units: [
       {
@@ -213,6 +221,8 @@ const properties: Property[] = [
     imageUrls: [image('davao-apartment')],
     availableFrom: '2026-09-25',
     landlordName: 'Jomar Alcantara',
+    landlordEmail: 'jomar.alcantara@example.test',
+    landlordPhone: '0926 555 0155',
     landlordVerified: false,
     units: [
       {
@@ -245,6 +255,8 @@ const properties: Property[] = [
     imageUrls: [image('manila-bedspace')],
     availableFrom: '2026-10-05',
     landlordName: 'Cecilia Lim',
+    landlordEmail: 'cecilia.lim@example.test',
+    landlordPhone: '0917 555 0733',
     landlordVerified: true,
     units: [
       {

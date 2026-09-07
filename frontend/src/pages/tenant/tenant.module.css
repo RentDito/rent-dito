@@ -1,0 +1,299 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.pageHeader {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.pageContext {
+  max-inline-size: 46rem;
+  margin-block-start: var(--space-2);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-supporting);
+}
+
+.breadcrumbs {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-supporting);
+}
+
+.breadcrumbs a {
+  color: var(--color-brand-deep);
+}
+
+.primaryAction,
+.secondaryAction,
+.tableAction {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-block-size: var(--touch-target-min);
+  padding-inline: var(--space-5);
+  border: 1px solid transparent;
+  border-radius: var(--radius-control);
+  font-size: var(--font-size-supporting);
+  font-weight: var(--font-weight-semibold);
+  text-decoration: none;
+}
+
+.primaryAction {
+  background: var(--color-brand-primary);
+  color: var(--color-brand-on-primary);
+}
+
+.primaryAction:hover {
+  background: var(--color-brand-deep);
+}
+
+.secondaryAction {
+  border-color: var(--color-border-strong);
+  background: var(--color-surface);
+  color: var(--color-text-primary);
+}
+
+.secondaryAction:hover {
+  border-color: var(--color-brand-primary);
+  color: var(--color-brand-deep);
+}
+
+.tableAction {
+  padding-inline: var(--space-3);
+  color: var(--color-brand-deep);
+}
+
+.tableAction:hover {
+  background: var(--color-brand-soft);
+}
+
+.cardLink {
+  color: var(--color-brand-deep);
+  font-size: var(--font-size-supporting);
+  font-weight: var(--font-weight-semibold);
+}
+
+/* ---------- next due, the tenant's first priority ---------- */
+
+.nextDue {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-6);
+  border: 1px solid var(--color-brand-border);
+  border-radius: var(--radius-card-lg);
+  background: linear-gradient(160deg, var(--color-brand-soft), var(--color-surface) 70%);
+}
+
+.nextDueHeading {
+  color: var(--color-brand-deep);
+  font-size: var(--font-size-supporting);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.nextDueAmount {
+  font-size: 2.25rem;
+  font-weight: var(--font-weight-bold);
+  letter-spacing: -0.02em;
+  line-height: var(--line-height-tight);
+}
+
+.nextDueMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  align-items: center;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-supporting);
+}
+
+.nextDueLabel {
+  color: var(--color-text-primary);
+  font-size: var(--font-size-supporting);
+  font-weight: var(--font-weight-medium);
+}
+
+.nextDueActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-block-start: var(--space-2);
+}
+
+.metaIcon {
+  flex-shrink: 0;
+  inline-size: 1rem;
+  block-size: 1rem;
+}
+
+/* ---------- shared record presentation ---------- */
+
+.facts {
+  display: grid;
+  gap: var(--space-4);
+  grid-template-columns: repeat(auto-fit, minmax(min(11rem, 100%), 1fr));
+  margin: 0;
+}
+
+.facts dt {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-caption);
+}
+
+.facts dd {
+  margin: var(--space-1) 0 0;
+  font-size: var(--font-size-supporting);
+  font-weight: var(--font-weight-semibold);
+}
+
+.rentalTitle {
+  font-size: var(--font-size-section-title);
+  font-weight: var(--font-weight-semibold);
+}
+
+.rentalAddress {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-supporting);
+}
+
+.tagList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tag {
+  padding: var(--space-1) var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  background: var(--color-canvas);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-caption);
+}
+
+.ruleList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin: 0;
+  padding-inline-start: var(--space-5);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-supporting);
+}
+
+.landlordName {
+  font-weight: var(--font-weight-semibold);
+}
+
+.contact {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.contact li {
+  display: flex;
+  gap: var(--space-2);
+  align-items: center;
+  font-size: var(--font-size-supporting);
+}
+
+.contact a {
+  color: var(--color-brand-deep);
+}
+
+.recentList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.recentRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card-sm);
+}
+
+.recentTitle {
+  font-weight: var(--font-weight-semibold);
+}
+
+.recentMeta {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-caption);
+}
+
+.recentAside {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  align-items: flex-end;
+}
+
+.recentAmount {
+  font-size: 1.0625rem;
+  font-weight: var(--font-weight-bold);
+}
+
+/* ---------- receipt ---------- */
+
+.receiptHeader {
+  display: flex;
+  gap: var(--space-4);
+  align-items: flex-start;
+}
+
+.receiptIcon {
+  flex-shrink: 0;
+  inline-size: 2.5rem;
+  block-size: 2.5rem;
+  color: var(--color-success);
+}
+
+.reference {
+  font-family: ui-monospace, 'SF Mono', 'Cascadia Mono', monospace;
+  font-size: 1rem;
+  letter-spacing: 0.04em;
+}
+
+.receiptAmount {
+  font-size: 1.25rem;
+  font-weight: var(--font-weight-bold);
+}
+
+.receiptActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+@media (max-width: 47.99rem) {
+  .recentAside {
+    align-items: flex-start;
+  }
+
+  .nextDueActions > * {
+    flex: 1;
+  }
+}
