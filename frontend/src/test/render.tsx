@@ -2,6 +2,11 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { render, type RenderOptions, type RenderResult } from '@testing-library/react';
 import type { ReactElement, ReactNode } from 'react';
 
+import { App } from '@/app/App';
+import type { DemoRole } from '@/app/demo/demoSessionContext';
+
+import { setViewportWidth } from './setup';
+
 /** Query client tuned for tests: no retries, no cache reuse between renders. */
 export const createTestQueryClient = () =>
   new QueryClient({
@@ -16,8 +21,8 @@ export interface RenderWithProvidersResult extends RenderResult {
 }
 
 /**
- * Renders a component with the same providers the application composes, so
- * component tests exercise the real data and cache wiring.
+ * Renders a single component with the application's data providers, for tests
+ * that do not need routing.
  */
 export function renderWithProviders(
   ui: ReactElement,
@@ -30,4 +35,37 @@ export function renderWithProviders(
   );
 
   return { ...render(ui, { wrapper: Wrapper, ...renderOptions }), queryClient };
+}
+
+export const VIEWPORTS = {
+  mobile: 390,
+  tablet: 768,
+  desktop: 1440,
+} as const;
+
+export interface RenderAppOptions {
+  /** Path the browser history starts at. */
+  route?: string;
+  role?: DemoRole;
+  viewport?: keyof typeof VIEWPORTS;
+  queryClient?: QueryClient;
+}
+
+/**
+ * Renders the whole application at a route, role, and viewport. Using the real
+ * `App` composition keeps tests honest about routing, providers, and shells.
+ */
+export function renderApp({
+  route = '/',
+  role = 'guest',
+  viewport = 'desktop',
+  queryClient = createTestQueryClient(),
+}: RenderAppOptions = {}): RenderWithProvidersResult {
+  setViewportWidth(VIEWPORTS[viewport]);
+  window.history.replaceState(null, '', route);
+
+  return {
+    ...render(<App queryClient={queryClient} initialRole={role} />),
+    queryClient,
+  };
 }

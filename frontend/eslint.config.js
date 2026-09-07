@@ -22,4 +22,12 @@ export default tseslint.config(
       'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
     },
   },
+  {
+    // Test infrastructure and the route table are not hot-reloaded component
+    // modules, so the fast-refresh export shape does not apply to them.
+    files: ['src/test/**/*.{ts,tsx}', 'src/app/router.tsx', '**/*.test.{ts,tsx}'],
+    rules: {
+      'react-refresh/only-export-components': 'off',
+    },
+  },
 );
