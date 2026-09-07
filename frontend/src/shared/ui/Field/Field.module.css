@@ -1,0 +1,60 @@
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.labelRow {
+  display: flex;
+  gap: var(--space-1);
+  align-items: baseline;
+}
+
+.label {
+  color: var(--color-text-primary);
+  font-size: var(--font-size-label);
+  font-weight: var(--font-weight-medium);
+}
+
+.labelRowHidden {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.requiredMark {
+  margin-inline-start: var(--space-1);
+  color: var(--color-error);
+}
+
+.field :where(input, select, textarea) {
+  min-block-size: var(--touch-target-min);
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-control);
+  background: var(--color-surface);
+  font-size: var(--font-size-body);
+}
+
+.field textarea {
+  min-block-size: 7rem;
+  resize: vertical;
+}
+
+.field :where(input, select, textarea)[aria-invalid='true'] {
+  border-color: var(--color-error);
+}
+
+.hint {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-supporting);
+}
+
+.error {
+  color: var(--color-error-strong);
+  font-size: var(--font-size-supporting);
+  font-weight: var(--font-weight-medium);
+}

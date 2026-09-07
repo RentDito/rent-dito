@@ -1,0 +1,96 @@
+.scroll {
+  inline-size: 100%;
+  overflow-x: auto;
+}
+
+.table {
+  inline-size: 100%;
+  border-collapse: collapse;
+  font-size: var(--font-size-supporting);
+  text-align: start;
+}
+
+.caption {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.table th {
+  padding: var(--space-3) var(--space-4);
+  border-block-end: 1px solid var(--color-border);
+  color: var(--color-text-secondary);
+  font-weight: var(--font-weight-semibold);
+  text-align: start;
+  white-space: nowrap;
+}
+
+.table td {
+  padding: var(--space-4);
+  border-block-end: 1px solid var(--color-border);
+  color: var(--color-text-primary);
+  vertical-align: middle;
+}
+
+.table :where(th, td)[data-align='end'] {
+  text-align: end;
+}
+
+.table tbody tr:last-child td {
+  border-block-end: none;
+}
+
+/* Below the tablet breakpoint the same table reflows into labelled records. */
+@media (max-width: 47.99rem) {
+  .scroll {
+    overflow-x: visible;
+  }
+
+  .table,
+  .table tbody,
+  .table tr,
+  .table td {
+    display: block;
+    inline-size: 100%;
+  }
+
+  .table thead {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+
+  .table tbody tr {
+    margin-block-end: var(--space-3);
+    padding: var(--space-2) var(--space-4);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-card-sm);
+    background: var(--color-surface);
+  }
+
+  .table td {
+    display: flex;
+    gap: var(--space-4);
+    align-items: baseline;
+    justify-content: space-between;
+    padding-inline: 0;
+    padding-block: var(--space-2);
+    text-align: end;
+  }
+
+  .table td::before {
+    content: attr(data-label);
+    color: var(--color-text-secondary);
+    font-weight: var(--font-weight-medium);
+    text-align: start;
+  }
+
+  .table tbody tr td:last-child {
+    border-block-end: none;
+  }
+}

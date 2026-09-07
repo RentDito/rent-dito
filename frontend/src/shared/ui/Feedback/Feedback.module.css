@@ -1,0 +1,94 @@
+.alert {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: var(--space-4);
+  border: 1px solid transparent;
+  border-radius: var(--radius-card-sm);
+}
+
+.alertText {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-inline-size: 0;
+}
+
+.alertTitle {
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-semibold);
+}
+
+.alertBody {
+  font-size: var(--font-size-supporting);
+}
+
+.alertAction {
+  flex-shrink: 0;
+}
+
+.info {
+  border-color: color-mix(in srgb, var(--color-information) 30%, transparent);
+  background: var(--color-information-bg);
+  color: var(--color-information-strong);
+}
+
+.success {
+  border-color: color-mix(in srgb, var(--color-success) 30%, transparent);
+  background: var(--color-success-bg);
+  color: var(--color-success-strong);
+}
+
+.warning {
+  border-color: color-mix(in srgb, var(--color-warning) 30%, transparent);
+  background: var(--color-warning-bg);
+  color: var(--color-warning-strong);
+}
+
+.danger {
+  border-color: color-mix(in srgb, var(--color-error) 30%, transparent);
+  background: var(--color-error-bg);
+  color: var(--color-error-strong);
+}
+
+.empty {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  align-items: center;
+  padding: var(--space-8) var(--space-5);
+  border: 1px dashed var(--color-border-strong);
+  border-radius: var(--radius-card);
+  background: var(--color-surface);
+  text-align: center;
+}
+
+.emptyIcon {
+  display: inline-flex;
+  padding: var(--space-3);
+  border-radius: 999px;
+  background: var(--color-brand-soft);
+  color: var(--color-brand-deep);
+}
+
+.emptyIcon > svg {
+  inline-size: 1.5rem;
+  block-size: 1.5rem;
+}
+
+.emptyTitle {
+  font-size: var(--font-size-section-title);
+  font-weight: var(--font-weight-semibold);
+}
+
+.emptyDescription {
+  max-inline-size: 34rem;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-supporting);
+}
+
+.emptyAction {
+  margin-block-start: var(--space-2);
+}
