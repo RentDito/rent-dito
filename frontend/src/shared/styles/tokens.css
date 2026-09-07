@@ -1,0 +1,107 @@
+:root {
+  color-scheme: light;
+
+  /* Core colour roles */
+  --color-brand-primary: #5b3fd6;
+  --color-brand-deep: #3720a5;
+  --color-brand-soft: #f1eeff;
+  --color-text-primary: #18202b;
+  --color-text-secondary: #667085;
+  --color-canvas: #f7f8fc;
+  --color-surface: #ffffff;
+  --color-success: #16865b;
+  --color-warning: #b86a00;
+  --color-error: #c63f4a;
+  --color-information: #2563eb;
+
+  /* Semantic contrast and background variants */
+  --color-brand-on-primary: #ffffff;
+  --color-brand-border: #cfc6ff;
+  --color-border: #d7dce5;
+  --color-border-strong: #aeb7c5;
+  --color-text-disabled: #98a2b3;
+  --color-success-bg: #e7f6ef;
+  --color-success-strong: #0c5b3d;
+  --color-warning-bg: #fff4e5;
+  --color-warning-strong: #804900;
+  --color-error-bg: #fdecee;
+  --color-error-strong: #8f2630;
+  --color-information-bg: #eff6ff;
+  --color-information-strong: #1d4ed8;
+
+  /* Typography */
+  --font-family-sans: 'Inter Variable', Inter, ui-sans-serif, system-ui, sans-serif;
+  --font-size-display: 2rem;
+  --font-size-page-title: 1.75rem;
+  --font-size-section-title: 1.25rem;
+  --font-size-body: 1rem;
+  --font-size-supporting: 0.875rem;
+  --font-size-label: 0.875rem;
+  --font-size-caption: 0.8125rem;
+  --line-height-tight: 1.2;
+  --line-height-heading: 1.3;
+  --line-height-body: 1.5;
+  --line-height-relaxed: 1.6;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  /* 4px spacing scale */
+  --space-0: 0;
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-7: 1.75rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+
+  /* Shape, layout, and elevation */
+  --radius-small: 0.625rem;
+  --radius-control: 0.75rem;
+  --radius-card-sm: 0.875rem;
+  --radius-card: 1rem;
+  --radius-card-lg: 1.125rem;
+  --content-width: 75rem;
+  --page-gutter: var(--space-4);
+  --shadow-subtle: 0 1px 2px rgb(24 32 43 / 0.06);
+  --shadow-raised: 0 4px 12px rgb(24 32 43 / 0.08);
+  --shadow-floating: 0 12px 28px rgb(24 32 43 / 0.12);
+
+  /* Interaction */
+  --focus-ring: 0 0 0 3px rgb(91 63 214 / 0.35);
+  --focus-ring-offset: 2px;
+  --touch-target-min: 2.75rem;
+  --duration-fast: 120ms;
+  --duration-standard: 180ms;
+  --duration-slow: 240ms;
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+}
+
+@media (min-width: 48rem) {
+  :root {
+    --page-gutter: var(--space-6);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-fast: 0.01ms;
+    --duration-standard: 0.01ms;
+    --duration-slow: 0.01ms;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}
