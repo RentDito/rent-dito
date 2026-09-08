@@ -1,4 +1,4 @@
-import { Heart, House, Search } from 'lucide-react';
+import { Heart, House } from 'lucide-react';
 import { NavLink, Outlet } from 'react-router-dom';
 
 import { DemoRoleSwitcher } from '@/features/demo-session/DemoRoleSwitcher';
@@ -8,7 +8,6 @@ import styles from './layouts.module.css';
 
 const PUBLIC_LINKS = [
   { to: routes.home, label: 'Home', icon: House },
-  { to: routes.listings, label: 'Browse rentals', icon: Search },
   { to: routes.saved, label: 'Saved', icon: Heart },
 ];
 

@@ -43,9 +43,17 @@ describe('application shells', () => {
   it('keeps marketplace navigation and a skip link on public routes', async () => {
     renderApp({ route: '/', viewport: 'desktop' });
 
+    const navigation = await screen.findByRole('navigation', {
+      name: 'Marketplace navigation',
+    });
+    expect(navigation).toBeVisible();
+    expect(within(navigation).getByRole('link', { name: 'Home' })).toHaveAttribute(
+      'aria-current',
+      'page',
+    );
     expect(
-      await screen.findByRole('navigation', { name: 'Marketplace navigation' }),
-    ).toBeVisible();
+      within(navigation).queryByRole('link', { name: 'Browse rentals' }),
+    ).not.toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Skip to main content' })).toBeInTheDocument();
   });
 

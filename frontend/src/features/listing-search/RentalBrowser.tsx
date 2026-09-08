@@ -2,17 +2,19 @@ import { SlidersHorizontal } from 'lucide-react';
 import { useState } from 'react';
 
 import { PropertyCard } from '@/entities/property/PropertyCard';
-import { ListingFilters } from '@/features/listing-search/ListingFilters';
-import { useListingSearch } from '@/features/listing-search/useListingSearch';
 import { useIsCompact } from '@/shared/hooks/useMediaQuery';
 import { Button } from '@/shared/ui/Button/Button';
 import { Drawer } from '@/shared/ui/Drawer/Drawer';
 import { EmptyState, SectionError } from '@/shared/ui/Feedback/Feedback';
 import { Skeleton } from '@/shared/ui/Skeleton/Skeleton';
 
-import styles from './marketplace.module.css';
+import styles from '@/pages/marketplace/marketplace.module.css';
 
-const ListingsPage = () => {
+import { ListingFilters } from './ListingFilters';
+import { useListingSearch } from './useListingSearch';
+
+/** The complete marketplace discovery surface, embedded on the public home page. */
+export const RentalBrowser = () => {
   const {
     formValues,
     hasFilters,
@@ -39,10 +41,10 @@ const ListingsPage = () => {
   );
 
   return (
-    <div className={styles.page}>
+    <section className={styles.section} id="rentals" aria-labelledby="browse-rentals-heading">
       <header className={styles.pageHeader}>
         <div>
-          <h1>Browse rentals</h1>
+          <h2 id="browse-rentals-heading">Browse rentals</h2>
           <p className={styles.pageContext}>
             Filter by location, property type, and monthly rent. Filters stay in the address bar, so
             you can share or bookmark a search.
@@ -64,9 +66,9 @@ const ListingsPage = () => {
         {!isCompact ? <aside className={styles.filterRail}>{filterForm}</aside> : null}
 
         <section className={styles.results} aria-labelledby="results-heading">
-          <h2 className="visually-hidden" id="results-heading">
+          <h3 className="visually-hidden" id="results-heading">
             Search results
-          </h2>
+          </h3>
 
           {results.isPending ? (
             <div className={styles.grid}>
@@ -122,8 +124,6 @@ const ListingsPage = () => {
           {filterForm}
         </Drawer>
       ) : null}
-    </div>
+    </section>
   );
 };
-
-export default ListingsPage;

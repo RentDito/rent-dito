@@ -5,7 +5,7 @@ import { switchDemoRole } from './support';
 test('a guest filters listings, inquires, and can switch into the landlord demo', async ({
   page,
 }) => {
-  await page.goto('/listings?type=condominium');
+  await page.goto('/?type=condominium');
 
   await expect(page.getByText('Showing 2 of 6 rentals')).toBeVisible();
 
@@ -32,7 +32,7 @@ test('applied filters survive a reload because they live in the URL', async ({
     if (isMobile) await page.getByRole('button', { name: 'Filters' }).click();
   };
 
-  await page.goto('/listings');
+  await page.goto('/');
   await openFilters();
 
   await page.getByLabel('Search by name or area').fill('Cebu');

@@ -41,7 +41,7 @@ const TenantDashboardPage = () => {
         title="You have no active rental"
         description="Browse listings and send an inquiry to get started."
         action={
-          <Link to={routes.listings} data-navigation-link>
+          <Link to={routes.home} data-navigation-link>
             Browse rentals
           </Link>
         }

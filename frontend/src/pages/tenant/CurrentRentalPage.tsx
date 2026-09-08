@@ -37,7 +37,7 @@ const CurrentRentalPage = () => {
         title="You have no active rental"
         description="Once a landlord starts your tenancy, its details appear here."
         action={
-          <Link to={routes.listings} data-navigation-link>
+          <Link to={routes.home} data-navigation-link>
             Browse rentals
           </Link>
         }

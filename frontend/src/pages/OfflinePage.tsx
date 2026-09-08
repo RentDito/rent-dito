@@ -47,7 +47,7 @@ const OfflinePage = () => {
           <Link to={routes.home} data-navigation-link>
             Go to RentDito home
           </Link>
-          <Link to={routes.listings} data-navigation-link>
+          <Link to={routes.home} data-navigation-link>
             Browse cached rentals
           </Link>
         </div>

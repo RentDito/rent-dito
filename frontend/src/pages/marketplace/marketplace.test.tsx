@@ -5,26 +5,29 @@ import { describe, expect, it } from 'vitest';
 import { renderApp } from '@/test/render';
 
 describe('marketplace discovery', () => {
-  it('leads with a search entry point and featured rentals on the home page', async () => {
+  it('makes the complete rental browser the default home experience', async () => {
     renderApp({ route: '/' });
 
     expect(await screen.findByRole('heading', { level: 1 })).toHaveTextContent(
       /find a rental you can trust/i,
     );
     expect(screen.getByLabelText('Where do you want to live?')).toBeVisible();
+    expect(screen.getByRole('heading', { name: 'Browse rentals' })).toBeVisible();
+    expect(screen.getByLabelText('Property type')).toBeVisible();
 
-    const featured = await screen.findByRole('region', { name: 'Featured rentals' });
-    expect(within(featured).getAllByRole('article').length).toBeGreaterThan(0);
+    const results = await screen.findByRole('region', { name: 'Search results' });
+    expect(within(results).getAllByRole('article')).toHaveLength(6);
   });
 
   it('filters listings and preserves applied filters in the URL', async () => {
     const user = userEvent.setup();
-    renderApp({ route: '/listings' });
+    renderApp({ route: '/' });
 
     await user.selectOptions(await screen.findByLabelText('Property type'), 'condominium');
     await user.click(screen.getByRole('button', { name: 'Apply filters' }));
 
     expect(window.location.search).toContain('type=condominium');
+    expect(window.location.pathname).toBe('/');
 
     const results = await screen.findByRole('region', { name: 'Search results' });
     const cards = within(results).getAllByRole('article');
@@ -34,7 +37,7 @@ describe('marketplace discovery', () => {
 
   it('explains a filter no-match without discarding the filters', async () => {
     const user = userEvent.setup();
-    renderApp({ route: '/listings' });
+    renderApp({ route: '/' });
 
     await user.type(await screen.findByLabelText('Search by name or area'), 'Baguio');
     await user.click(screen.getByRole('button', { name: 'Apply filters' }));
@@ -42,6 +45,14 @@ describe('marketplace discovery', () => {
     expect(await screen.findByText('No rentals match these filters')).toBeVisible();
     expect(screen.getByLabelText('Search by name or area')).toHaveValue('Baguio');
     expect(screen.getByRole('button', { name: 'Clear all filters' })).toBeVisible();
+  });
+
+  it('redirects the former listings page to home without losing its filters', async () => {
+    renderApp({ route: '/listings?type=condominium' });
+
+    expect(await screen.findByText('Showing 2 of 6 rentals')).toBeVisible();
+    expect(window.location.pathname).toBe('/');
+    expect(window.location.search).toBe('?type=condominium');
   });
 
   it('submits an inquiry with property context and durable confirmation', async () => {

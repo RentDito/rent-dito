@@ -68,7 +68,7 @@ const ListingDetailPage = () => {
         title="This listing is no longer available"
         description="It may have been removed from the prototype data."
         action={
-          <Link to={routes.listings} data-navigation-link>
+          <Link to={routes.home} data-navigation-link>
             Browse other rentals
           </Link>
         }
@@ -82,7 +82,7 @@ const ListingDetailPage = () => {
   return (
     <div className={styles.page}>
       <nav className={styles.breadcrumbs} aria-label="Breadcrumb">
-        <Link to={routes.listings}>Browse rentals</Link>
+        <Link to={routes.home}>Browse rentals</Link>
         <span aria-hidden="true"> / </span>
         <span aria-current="page">{home.title}</span>
       </nav>

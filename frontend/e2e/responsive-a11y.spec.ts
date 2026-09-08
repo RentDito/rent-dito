@@ -4,8 +4,7 @@ import { expect, test, type Page } from '@playwright/test';
 import { hasHorizontalOverflow, startAs } from './support';
 
 const ROUTES = [
-  { path: '/', role: 'guest' as const, name: 'home' },
-  { path: '/listings', role: 'guest' as const, name: 'search results' },
+  { path: '/', role: 'guest' as const, name: 'home and rental search' },
   { path: '/listings/prop-makati-01', role: 'guest' as const, name: 'listing detail' },
   { path: '/landlord', role: 'landlord' as const, name: 'landlord overview' },
   { path: '/landlord/properties', role: 'landlord' as const, name: 'landlord properties' },

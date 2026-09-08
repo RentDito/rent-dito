@@ -128,20 +128,6 @@
   gap: var(--space-4);
 }
 
-.sectionHeader {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-3);
-  align-items: baseline;
-  justify-content: space-between;
-}
-
-.sectionLink {
-  color: var(--color-brand-deep);
-  font-size: var(--font-size-supporting);
-  font-weight: var(--font-weight-semibold);
-}
-
 /* ---------- search ---------- */
 
 .searchLayout {

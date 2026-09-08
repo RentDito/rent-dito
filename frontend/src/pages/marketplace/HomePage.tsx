@@ -1,16 +1,12 @@
-import { useQuery } from '@tanstack/react-query';
 import { ShieldCheck, Wallet } from 'lucide-react';
 import { useState, type FormEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-import { rentDitoRepository } from '@/app/repositories';
-import { PropertyCard } from '@/entities/property/PropertyCard';
-import { listingKeys, PROPERTY_TYPES } from '@/features/listing-search/useListingSearch';
+import { RentalBrowser } from '@/features/listing-search/RentalBrowser';
+import { PROPERTY_TYPES } from '@/features/listing-search/useListingSearch';
 import { routes } from '@/shared/lib/routes';
 import { Button } from '@/shared/ui/Button/Button';
-import { SectionError } from '@/shared/ui/Feedback/Feedback';
 import { Field } from '@/shared/ui/Field/Field';
-import { Skeleton } from '@/shared/ui/Skeleton/Skeleton';
 
 import styles from './marketplace.module.css';
 
@@ -31,16 +27,12 @@ const HomePage = () => {
   const navigate = useNavigate();
   const [query, setQuery] = useState('');
 
-  const featured = useQuery({
-    queryKey: listingKeys.list({}),
-    queryFn: () => rentDitoRepository.listProperties({}),
-  });
-
   const search = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const params = new URLSearchParams();
     if (query.trim()) params.set('q', query.trim());
-    navigate(`${routes.listings}?${params.toString()}`);
+    const searchParams = params.toString();
+    navigate(`${routes.home}${searchParams ? `?${searchParams}` : ''}#rentals`);
   };
 
   return (
@@ -70,7 +62,10 @@ const HomePage = () => {
           <ul className={styles.chipList} aria-label="Browse by property type">
             {PROPERTY_TYPES.map((type) => (
               <li key={type.value}>
-                <Link className={styles.chipLink} to={`${routes.listings}?type=${type.value}`}>
+                <Link
+                  className={styles.chipLink}
+                  to={`${routes.home}?type=${type.value}#rentals`}
+                >
                   {type.label}
                 </Link>
               </li>
@@ -92,37 +87,7 @@ const HomePage = () => {
         </div>
       </section>
 
-      <section className={styles.section} aria-labelledby="featured-heading">
-        <div className={styles.sectionHeader}>
-          <h2 id="featured-heading">Featured rentals</h2>
-          <Link className={styles.sectionLink} to={routes.listings}>
-            Browse all rentals
-          </Link>
-        </div>
-
-        {featured.isPending ? (
-          <div className={styles.grid}>
-            {Array.from({ length: 3 }, (_, index) => (
-              <Skeleton key={index} lines={4} height="3rem" />
-            ))}
-          </div>
-        ) : null}
-
-        {featured.isError ? (
-          <SectionError
-            title="We could not load featured rentals"
-            onRetry={() => void featured.refetch()}
-          />
-        ) : null}
-
-        {featured.data ? (
-          <div className={styles.grid}>
-            {featured.data.slice(0, 3).map((property) => (
-              <PropertyCard key={property.id} property={property} />
-            ))}
-          </div>
-        ) : null}
-      </section>
+      <RentalBrowser />
     </div>
   );
 };

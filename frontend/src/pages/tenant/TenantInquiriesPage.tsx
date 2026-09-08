@@ -59,7 +59,7 @@ const TenantInquiriesPage = () => {
             Message your landlord
           </Button>
         ) : (
-          <Link className={styles.primaryAction} to={routes.listings}>
+          <Link className={styles.primaryAction} to={routes.home}>
             Browse rentals
           </Link>
         )}
@@ -86,7 +86,7 @@ const TenantInquiriesPage = () => {
           title="You have not sent any inquiries"
           description="Ask a landlord about a listing and the conversation appears here."
           action={
-            <Link to={routes.listings} data-navigation-link>
+            <Link to={routes.home} data-navigation-link>
               Browse rentals
             </Link>
           }

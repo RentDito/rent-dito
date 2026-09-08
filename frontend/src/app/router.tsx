@@ -1,4 +1,11 @@
-import { Link, createBrowserRouter, isRouteErrorResponse, useRouteError } from 'react-router-dom';
+import {
+  Link,
+  Navigate,
+  createBrowserRouter,
+  isRouteErrorResponse,
+  useLocation,
+  useRouteError,
+} from 'react-router-dom';
 import type { RouteObject } from 'react-router-dom';
 
 import { useDemoSession } from '@/app/demo/demoSessionContext';
@@ -13,7 +20,6 @@ import TenantDetailPage from '@/pages/landlord/TenantDetailPage';
 import TenantsPage from '@/pages/landlord/TenantsPage';
 import HomePage from '@/pages/marketplace/HomePage';
 import ListingDetailPage from '@/pages/marketplace/ListingDetailPage';
-import ListingsPage from '@/pages/marketplace/ListingsPage';
 import SavedPage from '@/pages/marketplace/SavedPage';
 import CurrentRentalPage from '@/pages/tenant/CurrentRentalPage';
 import PayDuePage from '@/pages/tenant/PayDuePage';
@@ -65,6 +71,12 @@ const RoleShell = () => {
   return role === 'guest' ? <PublicLayout /> : <WorkspaceLayout workspace={role} />;
 };
 
+/** Keeps shared and bookmarked search URLs working after browsing moved to Home. */
+const LegacyListingsRedirect = () => {
+  const { search, hash } = useLocation();
+  return <Navigate replace to={{ pathname: routes.home, search, hash }} />;
+};
+
 export const appRoutes: RouteObject[] = [
   {
     element: <RoleShell />,
@@ -76,7 +88,7 @@ export const appRoutes: RouteObject[] = [
     errorElement: <RouteErrorFallback />,
     children: [
       { path: routes.home, element: <HomePage /> },
-      { path: routes.listings, element: <ListingsPage /> },
+      { path: routes.listings, element: <LegacyListingsRedirect /> },
       { path: routePatterns.listingDetail, element: <ListingDetailPage /> },
       { path: routes.saved, element: <SavedPage /> },
       { path: routes.signIn, element: <SignInPage /> },

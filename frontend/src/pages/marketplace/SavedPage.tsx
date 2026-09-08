@@ -64,7 +64,7 @@ const SavedPage = () => {
             title="No saved rentals yet"
             description="Tap the heart on any listing to keep it here for comparison."
             action={
-              <Link to={routes.listings} data-navigation-link>
+              <Link to={routes.home} data-navigation-link>
                 Browse rentals
               </Link>
             }
