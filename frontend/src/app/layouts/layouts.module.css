@@ -31,16 +31,11 @@
 }
 
 .brandMark {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  inline-size: 2rem;
-  block-size: 2rem;
-  border-radius: 0.625rem;
-  background: var(--color-brand-primary);
-  color: var(--color-brand-on-primary);
-  font-size: 1rem;
-  font-weight: var(--font-weight-bold);
+  display: block;
+  flex: 0 0 auto;
+  inline-size: 2.25rem;
+  block-size: auto;
+  object-fit: contain;
 }
 
 .navIcon {

@@ -85,10 +85,14 @@ export const WorkspaceLayout = ({ workspace }: WorkspaceLayoutProps) => {
           </button>
         ) : null}
 
-        <NavLink className={styles.brand} to={home} end>
-          <span className={styles.brandMark} aria-hidden="true">
-            R
-          </span>
+        <NavLink className={styles.brand} to={home} end aria-label="RentDito home">
+          <img
+            className={styles.brandMark}
+            src="/icons/logo.png"
+            alt=""
+            width="598"
+            height="567"
+          />
           RentDito
         </NavLink>
 

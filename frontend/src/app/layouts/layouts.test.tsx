@@ -49,6 +49,20 @@ describe('application shells', () => {
     expect(screen.getByRole('link', { name: 'Skip to main content' })).toBeInTheDocument();
   });
 
+  it('uses the supplied RentDito artwork in the public brand link', async () => {
+    renderApp({ route: '/', viewport: 'desktop' });
+
+    const brand = await screen.findByRole('link', { name: 'RentDito home' });
+    expect(brand.querySelector('img')).toHaveAttribute('src', '/icons/logo.png');
+  });
+
+  it('uses the same supplied artwork in workspace branding', async () => {
+    renderApp({ route: '/landlord', role: 'landlord', viewport: 'desktop' });
+
+    const brand = await screen.findByRole('link', { name: 'RentDito home' });
+    expect(brand.querySelector('img')).toHaveAttribute('src', '/icons/logo.png');
+  });
+
   it('offers a way back from an unknown route', async () => {
     renderApp({ route: '/does-not-exist' });
 

@@ -21,10 +21,14 @@ export const PublicLayout = () => (
 
     <header className={styles.publicHeader}>
       <div className={styles.publicHeaderInner}>
-        <NavLink className={styles.brand} to={routes.home}>
-          <span className={styles.brandMark} aria-hidden="true">
-            R
-          </span>
+        <NavLink className={styles.brand} to={routes.home} aria-label="RentDito home">
+          <img
+            className={styles.brandMark}
+            src="/icons/logo.png"
+            alt=""
+            width="598"
+            height="567"
+          />
           RentDito
         </NavLink>
 

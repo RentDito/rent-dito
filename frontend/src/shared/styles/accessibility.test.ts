@@ -3,7 +3,7 @@ import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 
 const readStyle = (fileName: string) =>
-  readFileSync(resolve(process.cwd(), 'src/shared/styles', fileName), 'utf8');
+  readFileSync(resolve(process.cwd(), 'src/shared/styles', fileName), 'utf8').replace(/\r\n/g, '\n');
 
 describe('global accessibility style contracts', () => {
   it('bundles Inter Variable from a local package', () => {
