@@ -6,6 +6,7 @@ import { renderApp } from '@/test/render';
 
 describe('marketplace discovery', () => {
   it('makes the complete rental browser the default home experience', async () => {
+    const user = userEvent.setup();
     renderApp({ route: '/' });
 
     expect(await screen.findByRole('heading', { level: 1 })).toHaveTextContent(
@@ -13,7 +14,8 @@ describe('marketplace discovery', () => {
     );
     expect(screen.getByLabelText('Where do you want to live?')).toBeVisible();
     expect(screen.getByRole('heading', { name: 'Browse rentals' })).toBeVisible();
-    expect(screen.getByLabelText('Property type')).toBeVisible();
+    await user.click(screen.getByRole('button', { name: 'Filters' }));
+    expect(await screen.findByLabelText('Property type')).toBeVisible();
 
     const results = await screen.findByRole('region', { name: 'Search results' });
     expect(within(results).getAllByRole('article')).toHaveLength(6);
@@ -23,6 +25,7 @@ describe('marketplace discovery', () => {
     const user = userEvent.setup();
     renderApp({ route: '/' });
 
+    await user.click(await screen.findByRole('button', { name: 'Filters' }));
     await user.selectOptions(await screen.findByLabelText('Property type'), 'condominium');
     await user.click(screen.getByRole('button', { name: 'Apply filters' }));
 
@@ -39,12 +42,16 @@ describe('marketplace discovery', () => {
     const user = userEvent.setup();
     renderApp({ route: '/' });
 
+    await user.click(await screen.findByRole('button', { name: 'Filters' }));
     await user.type(await screen.findByLabelText('Search by name or area'), 'Baguio');
     await user.click(screen.getByRole('button', { name: 'Apply filters' }));
 
     expect(await screen.findByText('No rentals match these filters')).toBeVisible();
-    expect(screen.getByLabelText('Search by name or area')).toHaveValue('Baguio');
-    expect(screen.getByRole('button', { name: 'Clear all filters' })).toBeVisible();
+    expect(window.location.search).toContain('q=Baguio');
+    expect(screen.getByRole('button', { name: 'Show all rentals' })).toBeVisible();
+
+    await user.click(screen.getByRole('button', { name: 'Filters' }));
+    expect(await screen.findByLabelText('Search by name or area')).toHaveValue('Baguio');
   });
 
   it('redirects the former listings page to home without losing its filters', async () => {
