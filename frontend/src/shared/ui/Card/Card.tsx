@@ -73,7 +73,7 @@ const statTones: Record<Tone, string> = {
   info: styles.statInfo,
 };
 
-/** Text-first key figure. Values are always readable without a chart. */
+/** Key figure for portfolio and record summaries. Tone colours the value only when it signals urgency. */
 export const StatCard = ({ label, value, description, tone = 'neutral' }: StatCardProps) => {
   const labelId = useId();
 

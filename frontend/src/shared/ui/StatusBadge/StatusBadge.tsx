@@ -19,9 +19,7 @@ export const StatusBadge = ({ tone = 'neutral', icon, className, children }: Sta
       <span className={styles.icon} aria-hidden="true">
         {icon}
       </span>
-    ) : (
-      <span className={styles.dot} aria-hidden="true" />
-    )}
+    ) : null}
     {children}
   </span>
 );

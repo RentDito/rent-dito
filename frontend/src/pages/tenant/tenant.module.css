@@ -73,9 +73,29 @@
 }
 
 .cardLink {
-  color: var(--color-brand-deep);
-  font-size: var(--font-size-supporting);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-block-size: 2.25rem;
+  padding-inline: var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-control);
+  background: var(--color-surface);
+  color: var(--color-text-primary);
+  font-size: var(--font-size-caption);
   font-weight: var(--font-weight-semibold);
+  text-decoration: none;
+  transition:
+    background-color var(--duration-fast) var(--ease-standard),
+    border-color var(--duration-fast) var(--ease-standard),
+    color var(--duration-fast) var(--ease-standard);
+}
+
+.cardLink:hover {
+  border-color: var(--color-border-strong);
+  background: var(--color-canvas);
+  color: var(--color-text-primary);
+  text-decoration: none;
 }
 
 /* ---------- next due, the tenant's first priority ---------- */
@@ -85,23 +105,23 @@
   flex-direction: column;
   gap: var(--space-2);
   padding: var(--space-6);
-  border: 1px solid var(--color-brand-border);
-  border-radius: var(--radius-card-lg);
-  background: linear-gradient(160deg, var(--color-brand-soft), var(--color-surface) 70%);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-small);
+  background: var(--color-surface);
 }
 
 .nextDueHeading {
-  color: var(--color-brand-deep);
-  font-size: var(--font-size-supporting);
-  font-weight: var(--font-weight-semibold);
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-caption);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: 0.01em;
 }
 
 .nextDueAmount {
-  font-size: 2.25rem;
-  font-weight: var(--font-weight-bold);
-  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  font-size: 2rem;
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: -0.03em;
   line-height: var(--line-height-tight);
 }
 
@@ -173,10 +193,10 @@
 }
 
 .tag {
-  padding: var(--space-1) var(--space-3);
+  padding: var(--space-1) var(--space-2);
   border: 1px solid var(--color-border);
-  border-radius: 999px;
-  background: var(--color-canvas);
+  border-radius: var(--radius-small);
+  background: transparent;
   color: var(--color-text-secondary);
   font-size: var(--font-size-caption);
 }
@@ -218,7 +238,7 @@
 .recentList {
   display: flex;
   flex-direction: column;
-  gap: var(--space-3);
+  gap: 0;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -230,9 +250,17 @@
   gap: var(--space-4);
   align-items: flex-start;
   justify-content: space-between;
-  padding: var(--space-4);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-card-sm);
+  padding-block: var(--space-4);
+  border-block-end: 1px solid var(--color-border);
+}
+
+.recentRow:first-child {
+  padding-block-start: 0;
+}
+
+.recentRow:last-child {
+  padding-block-end: 0;
+  border-block-end: 0;
 }
 
 .recentTitle {
@@ -252,8 +280,10 @@
 }
 
 .recentAmount {
+  font-variant-numeric: tabular-nums;
   font-size: 1.0625rem;
-  font-weight: var(--font-weight-bold);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: -0.02em;
 }
 
 /* ---------- receipt ---------- */

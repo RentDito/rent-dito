@@ -20,14 +20,14 @@ export interface ListingFiltersProps {
   onApply: (next: ListingFiltersProps['values']) => void;
   onRemove: (key: AppliedFilter['key']) => void;
   onClear: () => void;
-  /** Rendered inside the mobile drawer, which supplies its own heading. */
+  /** Hide when the host surface (dialog/drawer) already supplies a title. */
   hideHeading?: boolean;
   onApplied?: () => void;
 }
 
 /**
- * One filter form used by both the desktop rail and the mobile drawer, so
- * filter meaning and state never diverge between layouts.
+ * One filter form used in the filters dialog and drawer, so filter meaning
+ * and state never diverge between layouts.
  */
 export const ListingFilters = ({
   values,

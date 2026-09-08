@@ -47,7 +47,6 @@ const LandlordDashboardPage = () => {
               label="Expected this month"
               value={formatCurrency(summary.expectedThisMonth)}
               description="Total billed across your active tenancies"
-              tone="brand"
             />
             <StatCard
               label="Collected this month"
@@ -55,7 +54,6 @@ const LandlordDashboardPage = () => {
               description={`${formatCurrency(
                 Math.max(summary.expectedThisMonth - summary.collectedThisMonth, 0),
               )} still to collect`}
-              tone="success"
             />
             <StatCard
               label="Overdue"
@@ -69,19 +67,17 @@ const LandlordDashboardPage = () => {
               label="Occupancy"
               value={`${Math.round(summary.occupancyRate * 100)}%`}
               description={`${summary.occupiedCount} of ${summary.unitCount} units occupied`}
-              tone="info"
             />
             <StatCard
               label="Vacant units"
               value={String(summary.vacantCount)}
               description="Available and visible in public search"
-              tone={summary.vacantCount > 0 ? 'warning' : 'neutral'}
             />
             <StatCard
               label="Open inquiries"
               value={String(summary.openInquiryCount)}
               description={`${summary.needsReplyCount} still need a reply`}
-              tone={summary.openInquiryCount > 0 ? 'warning' : 'neutral'}
+              tone={summary.needsReplyCount > 0 ? 'warning' : 'neutral'}
             />
           </div>
 

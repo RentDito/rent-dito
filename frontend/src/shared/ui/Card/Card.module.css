@@ -1,12 +1,11 @@
 .card {
   display: flex;
   flex-direction: column;
-  gap: var(--space-4);
+  gap: var(--space-5);
   padding: var(--space-5);
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-card);
+  border-radius: var(--radius-small);
   background: var(--color-surface);
-  box-shadow: var(--shadow-subtle);
 }
 
 .flush {
@@ -18,8 +17,10 @@
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-3);
-  align-items: flex-start;
+  align-items: flex-end;
   justify-content: space-between;
+  padding-block-end: var(--space-4);
+  border-block-end: 1px solid var(--color-border);
 }
 
 .flush .header,
@@ -44,13 +45,14 @@
 }
 
 .title {
-  font-size: var(--font-size-section-title);
+  font-size: 1.0625rem;
   font-weight: var(--font-weight-semibold);
+  letter-spacing: -0.01em;
 }
 
 .description {
   color: var(--color-text-secondary);
-  font-size: var(--font-size-supporting);
+  font-size: var(--font-size-caption);
 }
 
 .actions {
@@ -71,55 +73,52 @@
   border-block-start: 1px solid var(--color-border);
 }
 
+/* KPI cells — chrome comes from the parent board (gap + border), not per-tile accents. */
 .stat {
   display: flex;
   flex-direction: column;
-  gap: var(--space-1);
-  padding: var(--space-4);
-  border: 1px solid var(--color-border);
-  border-inline-start: 4px solid var(--color-border-strong);
-  border-radius: var(--radius-card-sm);
+  gap: var(--space-2);
+  min-inline-size: 0;
+  padding: var(--space-5);
+  border: 0;
+  border-radius: 0;
   background: var(--color-surface);
 }
 
 .statLabel {
   color: var(--color-text-secondary);
-  font-size: var(--font-size-supporting);
+  font-size: var(--font-size-caption);
   font-weight: var(--font-weight-medium);
+  letter-spacing: 0.01em;
+  line-height: var(--line-height-tight);
 }
 
 .statValue {
   color: var(--color-text-primary);
-  font-size: var(--font-size-page-title);
-  font-weight: var(--font-weight-bold);
+  font-variant-numeric: tabular-nums;
+  font-size: 1.625rem;
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: -0.03em;
   line-height: var(--line-height-tight);
 }
 
 .statDescription {
   color: var(--color-text-secondary);
   font-size: var(--font-size-caption);
+  line-height: var(--line-height-body);
 }
 
-.statNeutral {
-  border-inline-start-color: var(--color-border-strong);
+.statNeutral .statValue,
+.statBrand .statValue,
+.statInfo .statValue,
+.statSuccess .statValue {
+  color: var(--color-text-primary);
 }
 
-.statBrand {
-  border-inline-start-color: var(--color-brand-primary);
+.statWarning .statValue {
+  color: var(--color-warning-strong);
 }
 
-.statSuccess {
-  border-inline-start-color: var(--color-success);
-}
-
-.statWarning {
-  border-inline-start-color: var(--color-warning);
-}
-
-.statDanger {
-  border-inline-start-color: var(--color-error);
-}
-
-.statInfo {
-  border-inline-start-color: var(--color-information);
+.statDanger .statValue {
+  color: var(--color-error-strong);
 }

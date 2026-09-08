@@ -130,27 +130,19 @@
 
 /* ---------- search ---------- */
 
-.searchLayout {
-  display: grid;
-  gap: var(--space-6);
-  grid-template-columns: 18rem minmax(0, 1fr);
-  align-items: start;
-}
-
-.filterRail {
-  position: sticky;
-  inset-block-start: 5rem;
-  padding: var(--space-5);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-card);
-  background: var(--color-surface);
-}
-
 .results {
   display: flex;
   flex-direction: column;
   gap: var(--space-4);
   min-inline-size: 0;
+}
+
+.resultsToolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  align-items: center;
+  justify-content: space-between;
 }
 
 .resultCount {
@@ -162,7 +154,7 @@
 .grid {
   display: grid;
   gap: var(--space-4);
-  grid-template-columns: repeat(auto-fill, minmax(min(19rem, 100%), 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
 /* ---------- detail ---------- */
@@ -274,9 +266,17 @@
   gap: var(--space-3);
   align-items: flex-start;
   justify-content: space-between;
-  padding: var(--space-4);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-card-sm);
+  padding-block: var(--space-4);
+  border-block-end: 1px solid var(--color-border);
+}
+
+.unitList .unitRow:first-child {
+  padding-block-start: 0;
+}
+
+.unitList .unitRow:last-child {
+  padding-block-end: 0;
+  border-block-end: 0;
 }
 
 .unitName {
@@ -310,10 +310,10 @@
 }
 
 .tag {
-  padding: var(--space-1) var(--space-3);
+  padding: var(--space-1) var(--space-2);
   border: 1px solid var(--color-border);
-  border-radius: 999px;
-  background: var(--color-canvas);
+  border-radius: var(--radius-small);
+  background: transparent;
   color: var(--color-text-secondary);
   font-size: var(--font-size-caption);
 }
@@ -339,14 +339,16 @@
 }
 
 @media (max-width: 61.99rem) {
-  .searchLayout,
   .detailLayout {
     grid-template-columns: minmax(0, 1fr);
   }
 
-  .filterRail,
   .detailAside {
     position: static;
+  }
+
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
@@ -366,5 +368,9 @@
 
   .galleryThumb {
     max-block-size: 16rem;
+  }
+
+  .grid {
+    grid-template-columns: minmax(0, 1fr);
   }
 }

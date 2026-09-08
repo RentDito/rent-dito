@@ -39,9 +39,30 @@
 
 .cardLink,
 .tableLink {
-  color: var(--color-brand-deep);
-  font-size: var(--font-size-supporting);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-block-size: 2.25rem;
+  padding-inline: var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-control);
+  background: var(--color-surface);
+  color: var(--color-text-primary);
+  font-size: var(--font-size-caption);
   font-weight: var(--font-weight-semibold);
+  text-decoration: none;
+  transition:
+    background-color var(--duration-fast) var(--ease-standard),
+    border-color var(--duration-fast) var(--ease-standard),
+    color var(--duration-fast) var(--ease-standard);
+}
+
+.cardLink:hover,
+.tableLink:hover {
+  border-color: var(--color-border-strong);
+  background: var(--color-canvas);
+  color: var(--color-text-primary);
+  text-decoration: none;
 }
 
 .breadcrumbs {
@@ -55,8 +76,20 @@
 
 .statGrid {
   display: grid;
-  gap: var(--space-4);
-  grid-template-columns: repeat(auto-fit, minmax(min(15rem, 100%), 1fr));
+  gap: 1px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-small);
+  background: var(--color-border);
+}
+
+.statGrid > * {
+  background: var(--color-surface);
+}
+
+.statGrid > [aria-hidden='true'] {
+  padding: var(--space-5);
 }
 
 .filterBar {
@@ -88,7 +121,7 @@
 .unitList {
   display: flex;
   flex-direction: column;
-  gap: var(--space-3);
+  gap: 0;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -101,9 +134,19 @@
   gap: var(--space-4);
   align-items: flex-start;
   justify-content: space-between;
-  padding: var(--space-4);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-card-sm);
+  padding-block: var(--space-4);
+  border-block-end: 1px solid var(--color-border);
+}
+
+.attentionRow:first-child,
+.unitRow:first-child {
+  padding-block-start: 0;
+}
+
+.attentionRow:last-child,
+.unitRow:last-child {
+  padding-block-end: 0;
+  border-block-end: 0;
 }
 
 .attentionTitle,
@@ -126,8 +169,10 @@
 }
 
 .attentionAmount {
+  font-variant-numeric: tabular-nums;
   font-size: 1.0625rem;
-  font-weight: var(--font-weight-bold);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: -0.02em;
 }
 
 .detailGrid {
@@ -164,10 +209,10 @@
 }
 
 .tag {
-  padding: var(--space-1) var(--space-3);
+  padding: var(--space-1) var(--space-2);
   border: 1px solid var(--color-border);
-  border-radius: 999px;
-  background: var(--color-canvas);
+  border-radius: var(--radius-small);
+  background: transparent;
   color: var(--color-text-secondary);
   font-size: var(--font-size-caption);
 }
@@ -183,6 +228,10 @@
 }
 
 @media (max-width: 63.99rem) {
+  .statGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   /* Stack the record aside, but let badges keep their intrinsic width. */
   .attentionAside,
   .unitAside {
@@ -214,6 +263,10 @@
 }
 
 @media (max-width: 30rem) {
+  .statGrid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
   .replyActions {
     flex-direction: column-reverse;
   }
