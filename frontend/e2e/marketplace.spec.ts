@@ -25,12 +25,8 @@ test('a guest filters listings, inquires, and can switch into the landlord demo'
 
 test('applied filters survive a reload because they live in the URL', async ({
   page,
-  isMobile,
 }) => {
-  // Desktop shows the filter rail; compact viewports open the same form in a drawer.
-  const openFilters = async () => {
-    if (isMobile) await page.getByRole('button', { name: 'Filters' }).click();
-  };
+  const openFilters = () => page.getByRole('button', { name: 'Filters' }).click();
 
   await page.goto('/');
   await openFilters();
