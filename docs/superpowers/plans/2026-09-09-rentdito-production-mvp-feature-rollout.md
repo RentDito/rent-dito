@@ -83,6 +83,8 @@ Dependencies point inward: `frontend -> contracts`, `api -> contracts`, and neit
 
 **Feature release:** Delivery foundation; no production product behavior is enabled.
 
+**Implementation handoff:** `docs/task-0-foundation-implementation.md`
+
 **Files:**
 - Create: `package.json`
 - Create: `package-lock.json` through npm
