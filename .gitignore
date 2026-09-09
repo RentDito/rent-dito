@@ -1,5 +1,10 @@
 .worktrees/
 .superpowers/
+node_modules/
+api/dist/
+packages/contracts/dist/
+supabase/.branches/
+supabase/.temp/
 frontend/node_modules/
 frontend/dist/
 frontend/coverage/

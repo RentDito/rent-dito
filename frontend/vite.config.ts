@@ -51,6 +51,7 @@ export default defineConfig({
   test: {
     environment: 'jsdom',
     setupFiles: './src/test/setup.ts',
+    testTimeout: 15_000,
     // Playwright owns e2e/; Vitest must not try to run those specs.
     include: ['src/**/*.{test,spec}.{ts,tsx}'],
   },

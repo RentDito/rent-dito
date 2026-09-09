@@ -1,0 +1,39 @@
+services:
+  - type: web
+    name: rentdito-api
+    runtime: node
+    rootDir: .
+    buildCommand: npm ci && npm run build -w @rentdito/contracts && npm run build -w @rentdito/api
+    startCommand: npm run start -w @rentdito/api
+    healthCheckPath: /healthz
+    envVars:
+      - key: NODE_VERSION
+        value: 24.14.1
+      - key: NODE_ENV
+        value: production
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_ANON_KEY
+        sync: false
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false
+      - key: WEB_ORIGINS
+        sync: false
+      - key: FEATURE_ACCOUNTS
+        value: "false"
+      - key: FEATURE_MARKETPLACE
+        value: "false"
+      - key: FEATURE_LISTING_AUTHORING
+        value: "false"
+      - key: FEATURE_LISTING_MODERATION
+        value: "false"
+      - key: FEATURE_SAVED_INQUIRIES
+        value: "false"
+      - key: FEATURE_TENANCY_INVITATIONS
+        value: "false"
+      - key: FEATURE_TENANT_BILLING
+        value: "false"
+      - key: FEATURE_PAYMENT_PROOFS
+        value: "false"
+      - key: FEATURE_LANDLORD_OPERATIONS
+        value: "false"

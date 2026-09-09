@@ -1,0 +1,39 @@
+{
+  "name": "@rentdito/api",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=24.0.0 <25"
+  },
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/server.js",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint .",
+    "test:run": "vitest run",
+    "job:generate-dues": "node dist/jobs/generateDues.js",
+    "job:cleanup-uploads": "node dist/jobs/cleanupUploads.js",
+    "admin:create": "node dist/commands/adminAccounts.js create",
+    "admin:reset-password": "node dist/commands/adminAccounts.js reset-password"
+  },
+  "dependencies": {
+    "@fastify/cors": "^11.3.0",
+    "@fastify/helmet": "^13.1.1",
+    "@fastify/rate-limit": "^11.2.0",
+    "@rentdito/contracts": "*",
+    "@supabase/supabase-js": "^2.116.0",
+    "fastify": "^5.12.3",
+    "file-type": "^22.0.2",
+    "zod": "^4.1.5"
+  },
+  "devDependencies": {
+    "@types/node": "^24.3.0",
+    "eslint": "^9.34.0",
+    "globals": "^16.3.0",
+    "tsx": "^4.23.13",
+    "typescript": "^5.9.2",
+    "typescript-eslint": "^8.41.0",
+    "vitest": "^3.2.4"
+  }
+}

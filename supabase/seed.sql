@@ -1,0 +1,1 @@
+-- Task 0 intentionally contains no product or demo seed data.
