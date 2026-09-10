@@ -623,7 +623,7 @@ git commit -m "build: establish production platform foundation"
 - Produces: `RequestActor { userId; role; username }` on protected API requests
 - Consumes: Task 0 API problem and feature contracts
 
-- [ ] **Step 1: Define the shared account contract**
+- [x] **Step 1: Define the shared account contract**
 
 ```ts
 // packages/contracts/src/auth.ts

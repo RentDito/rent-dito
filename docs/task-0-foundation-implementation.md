@@ -465,6 +465,11 @@ Most recent Task 0 verification on 2026-09-10:
 | Production build | Passed |
 | Playwright | 51 passed, 1 skipped across desktop and mobile projects |
 
+These Vitest figures are the Task 0 baseline, recorded at the time the
+foundation was accepted. Later feature slices add their own suites, so a
+current `npm test` reports higher numbers; treat the table as a historical
+snapshot rather than a count to keep in sync.
+
 For a machine with a compatible installed Chromium browser, Playwright also
 supports:
 
