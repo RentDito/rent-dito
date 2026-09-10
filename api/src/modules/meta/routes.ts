@@ -1,5 +1,5 @@
 import type { FastifyInstance } from 'fastify';
-import type { FeatureKey } from '@rentdito/contracts';
+import { featureResponseSchema, type FeatureKey } from '@rentdito/contracts';
 
 export type FeatureFlags = Record<FeatureKey, boolean>;
 
@@ -37,9 +37,13 @@ export async function registerMetaRoutes(
     return { status: 'ok', database: 'ok' };
   });
 
-  app.get('/v1/meta/features', async () => ({
-    features: Object.fromEntries(
-      featureKeys.map((key) => [key, dependencies.featureFlags[key] ?? false]),
-    ),
-  }));
+  // Parsing on the way out keeps the published contract the single source of
+  // truth: a key added to `featureKeySchema` but missed here fails loudly.
+  app.get('/v1/meta/features', async () =>
+    featureResponseSchema.parse({
+      features: Object.fromEntries(
+        featureKeys.map((key) => [key, dependencies.featureFlags[key] ?? false]),
+      ),
+    }),
+  );
 }

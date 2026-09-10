@@ -4,9 +4,11 @@
 
 **Last updated:** 2026-09-10
 
-**Implementation branch:** `feat/task-0-foundation`
+**Implementation branch:** merged to `main`; no `feat/*` branch remains.
 
-**Implementation commit:** `4ae93e3 build: establish production platform foundation`
+**Implementation commits:** `4ae93e3 build: establish production platform
+foundation`, `333a8a1 docs: document task 0 foundation`, and the follow-up
+audit-remediation commit that closed the gaps listed in section 11.1.
 
 ## 1. Status
 
@@ -17,13 +19,13 @@ the staging Supabase, Render, and Vercel projects.
 | Area | Status | Evidence or remaining action |
 | --- | --- | --- |
 | npm workspace and Node pin | Complete | Root workspace, root lockfile, and Node `24.14.1` are committed. |
-| Shared contracts | Complete | Feature-key, feature-response, and API-problem schemas are exported by `@rentdito/contracts`. |
+| Shared contracts | Complete | Feature-key, feature-response, and API-problem schemas are exported by `@rentdito/contracts`, covered by 7 unit tests, and the feature endpoint serialises through `featureResponseSchema`. |
 | Fastify API foundation | Complete | Environment parsing, readiness endpoint, feature endpoint, and idempotency primitive are implemented. |
 | Supabase foundation | Complete locally | Migration resets cleanly; database lint and 10 pgTAP assertions passed. |
 | Vercel configuration | Complete in code | SPA rewrite and baseline response headers are committed. |
 | Render configuration | Complete in code | API blueprint, health check, required variables, and disabled flags are committed. |
 | CI | Complete in code | Database, type, lint, unit, build, and browser gates run on pull requests and pushes to `main`. |
-| Local verification | Complete | The complete foundation gate passed on 2026-09-10. |
+| Local verification | Complete | The complete foundation gate passed on 2026-09-10; see section 11 for counts and section 11.1 for the audit fixes. |
 | Staging deployment and smoke test | Pending | Provision separate staging services, deploy, and verify the two public metadata endpoints. |
 | Production deployment | Not started | Production remains intentionally untouched until staging acceptance. |
 
@@ -51,10 +53,18 @@ Task 0 does **not** provide:
 - Tenant dues or receipt-image submission.
 - Landlord receipt approval or payment settlement.
 - A frontend HTTP repository; the current UI remains backed by demo/mock data.
+  No frontend module imports `@rentdito/contracts` yet.
 - A database-backed implementation of the idempotency store.
-- Scheduled billing or cleanup jobs. Their package scripts are reserved for later tasks.
-- Final API CORS, Helmet, rate limiting, or centralized error handling. Those are
-  introduced with the feature slices and production-hardening task.
+- Scheduled billing or cleanup jobs, and the private administrator CLI. The
+  `job:generate-dues`, `job:cleanup-uploads`, `admin:create`, and
+  `admin:reset-password` scripts in `api/package.json` are reserved names that
+  point at files a later task adds; running one today fails with a missing
+  module.
+- Helmet, rate limiting, or centralized error handling. Those are introduced
+  with the feature slices and production-hardening task. The `@fastify/helmet`,
+  `@fastify/rate-limit`, and `file-type` dependencies are declared ahead of that
+  work and are not yet imported by any module in `api/src`. CORS **is** wired,
+  because Task 1 puts a browser in front of this API.
 
 ## 3. Runtime architecture
 
@@ -80,11 +90,17 @@ Supabase
 Dependency direction is deliberately one-way:
 
 ```text
-frontend -----> @rentdito/contracts <----- api
-                                         |
-                                         v
-                                      Supabase
+frontend ‑ ‑ ‑> @rentdito/contracts <----- api
+   (planned)                              |
+                                          v
+                                       Supabase
 ```
+
+The solid arrow is live today: the API imports `featureResponseSchema` and
+validates `/v1/meta/features` through it. The dashed arrow is planned. The
+frontend declares `@rentdito/contracts` as a dependency but no frontend module
+imports it yet, because the HTTP repository that would consume the schemas
+arrives with a later task.
 
 The frontend and API do not import one another. Public request/response schemas
 belong in `packages/contracts`; database-generated types remain private to the API.
@@ -100,7 +116,13 @@ belong in `packages/contracts`; database-generated types remain private to the A
 |- render.yaml                          Render API blueprint
 |- .github/workflows/ci.yml             CI verification pipeline
 |- packages/contracts/
-|  `- src/common.ts                     Shared platform schemas
+|  |- src/common.ts                     Shared platform schemas
+|  |- src/index.ts                      Public package surface
+|  |- test/contracts.test.ts            Feature-key and problem-shape guards
+|  |- eslint.config.js                  Lint configuration
+|  |- vitest.config.ts                  Unit-test configuration
+|  |- tsconfig.json                     Type-check config (src + test)
+|  `- tsconfig.build.json               Emit config (src only)
 |- api/
 |  |- .env.example                      API variable template
 |  |- src/app.ts                        Testable Fastify composition
@@ -108,15 +130,25 @@ belong in `packages/contracts`; database-generated types remain private to the A
 |  |- src/env.ts                        Strict environment parsing
 |  |- src/modules/meta/routes.ts        Health and feature endpoints
 |  |- src/plugins/idempotency.ts        Reusable idempotency runner
-|  `- src/generated/database.types.ts   Generated Supabase types
+|  |- src/generated/database.types.ts   Generated Supabase types
+|  |- test/                             env, idempotency, and meta suites
+|  |- eslint.config.js                  Lint configuration
+|  |- vitest.config.ts                  Unit-test configuration
+|  |- tsconfig.json                     Type-check config (src + test)
+|  `- tsconfig.build.json               Emit config (src only)
 |- supabase/
 |  |- config.toml                       Local Supabase configuration
+|  |- seed.sql                          Deliberately empty in Task 0
 |  |- migrations/202609090001_foundation.sql
 |  `- tests/database/001_foundation.test.sql
 `- frontend/
    |- .env.example                      Public API URL template
    `- vercel.json                       SPA and baseline headers
 ```
+
+Each TypeScript workspace carries two configs on purpose. `tsconfig.json`
+type-checks `src` **and** `test`, so the type gate covers test code;
+`tsconfig.build.json` narrows the emit to `src` so no test file reaches `dist`.
 
 ## 5. Workspace and build conventions
 
@@ -130,7 +162,24 @@ commands from the repository root unless a command says otherwise.
 | `packages/contracts` | `@rentdito/contracts` | Zod schemas and shared TypeScript types |
 
 Node must satisfy `>=24.0.0 <25`; CI and Render use the exact `.node-version`
-value, `24.14.1`.
+value, `24.14.1`. A developer machine on a different 24.x patch still satisfies
+`engines`, but reproduce a CI failure on `24.14.1` before assuming it is
+environmental.
+
+`@rentdito/contracts` resolves types from `src` but resolves its **runtime**
+import from `dist`. Anything that executes contracts code — the Vitest suites,
+`npm run dev -w @rentdito/api`, the built API — therefore needs `dist` to exist
+first. Two mechanisms guarantee that, and Task 1 must preserve both:
+
+- The contracts package has a `prepare` script, so `npm ci` and `npm install`
+  build it automatically.
+- The root `npm test` script builds contracts before invoking any workspace
+  suite, because the test gate runs *before* the build gate in CI.
+
+Without these, the first value import of a contracts schema fails at runtime
+with `Failed to resolve entry for package "@rentdito/contracts"` while
+type-checking still passes — a confusing failure Task 1 would otherwise hit the
+moment it adds account schemas.
 
 Root commands:
 
@@ -138,9 +187,10 @@ Root commands:
 | --- | --- |
 | `npm ci` | Reproduce the committed dependency graph. |
 | `npm run build` | Build contracts, API, then frontend. |
+| `npm run build:contracts` | Build only `@rentdito/contracts`. |
 | `npm run typecheck` | Type-check every workspace that defines the script. |
 | `npm run lint` | Lint every workspace that defines the script. |
-| `npm test` | Run all Vitest suites once. |
+| `npm test` | Build contracts, then run all Vitest suites once. |
 | `npm run db:start` | Start the local Supabase stack. |
 | `npm run db:reset` | Rebuild the local database from migrations and seed. |
 | `npm run db:lint` | Fail on database lint errors. |
@@ -238,6 +288,11 @@ default to `false`.
 }
 ```
 
+The handler serialises through `featureResponseSchema` rather than returning a
+hand-built object. Because the schema's key set is exhaustive, adding a key to
+`featureKeySchema` without also reporting it here fails at runtime instead of
+silently shipping an incomplete response.
+
 In Task 0 this endpoint reports configuration only. There are no product API
 routes to gate yet.
 
@@ -270,7 +325,7 @@ ports, or non-boolean feature values stop the process immediately.
 | `SUPABASE_URL` | Yes | No | Staging and production must point to different projects. |
 | `SUPABASE_ANON_KEY` | Yes | Treat as configuration | Required for future user-scoped clients; not currently used by `server.ts`. |
 | `SUPABASE_SERVICE_ROLE_KEY` | Yes | **Yes** | Render only. Never expose it to Vercel, browser code, logs, or commits. |
-| `WEB_ORIGINS` | Yes | No | Comma-separated origins with no path, query, or fragment. |
+| `WEB_ORIGINS` | Yes | No | Comma-separated origins with no path, query, or fragment. Consumed by the CORS plugin: only these exact origins receive `Access-Control-Allow-Origin`. An empty or wrong value blocks the browser rather than allowing everything. |
 | `FEATURE_*` | No | No | Exact lowercase `true` or `false`; every flag defaults to `false`. |
 | `VITE_API_BASE_URL` | Frontend deployment | No | Public Render API origin. All `VITE_` values are browser-visible. |
 
@@ -406,9 +461,14 @@ Most recent Task 0 verification on 2026-09-10:
 | Database tests | 1 test file, 10 pgTAP assertions passed |
 | TypeScript checks | Passed |
 | ESLint | Passed |
-| Vitest | 14 files, 73 tests passed: frontend 11/63 and API 3/10 |
+| Vitest | 15 files, 82 tests passed: frontend 11/63, API 3/12, contracts 1/7 |
 | Production build | Passed |
 | Playwright | 51 passed, 1 skipped across desktop and mobile projects |
+
+These Vitest figures are the Task 0 baseline, recorded at the time the
+foundation was accepted. Later feature slices add their own suites, so a
+current `npm test` reports higher numbers; treat the table as a historical
+snapshot rather than a count to keep in sync.
 
 For a machine with a compatible installed Chromium browser, Playwright also
 supports:
@@ -421,6 +481,28 @@ npm run e2e
 GitHub Actions reproduces the same database, type, lint, test, build, and browser
 sequence for every pull request and push to `main`. It always stops local
 Supabase, even when a previous step fails.
+
+Note that the test gate runs before the build gate. That order is safe only
+because `npm test` builds `@rentdito/contracts` first; see section 5.
+
+### 11.1 Audit remediation
+
+An audit of this document against the tree found the following, all now fixed.
+Task 1 inherits the corrected state.
+
+| Finding | Resolution |
+| --- | --- |
+| `.gitignore` had no `.env` rule, yet the committed `.env.example` told developers to "keep real credentials in untracked `.env` files" | Added and verified the ignore rules in section 14 |
+| `api/tsconfig.json` excluded `test/`, so the type gate never checked API test code | Split into `tsconfig.json` (src + test, `noEmit`) and `tsconfig.build.json` (src only) |
+| Enabling the above surfaced two real pre-existing type errors: `toMatchObject<Partial<IdempotencyConflictError>>` passes a type argument the matcher does not accept | Replaced with a typed `expectedConflict` helper that keeps the assertion bound to the error's declared fields; verified non-vacuous by mutating the expected status and watching both tests fail |
+| `api/eslint.config.js` imported `@eslint/js` without declaring it; it resolved only by hoisting from `frontend` | Declared in the API's `devDependencies` |
+| `packages/contracts` had no lint config and no tests, so `npm run lint` and `npm test` silently skipped it | Added `eslint.config.js`, `vitest.config.ts`, and 7 contract tests; verified lint is active by planting an unused variable |
+| The exported contract schemas were referenced nowhere; `/v1/meta/features` hand-built the response it was supposed to satisfy | The route now parses through `featureResponseSchema` |
+| Wiring that value import exposed a latent ordering bug: the test gate runs before the build gate, so any runtime import of contracts failed CI | `npm test` now builds contracts first, and contracts gained a `prepare` script; verified by deleting `dist` and running the whole gate |
+| The header named a branch `feat/task-0-foundation` that does not exist | Corrected to `main` |
+| Section 4 omitted `packages/contracts/src/index.ts` and `supabase/seed.sql`; an empty untracked `backend/` directory sat in the tree | Layout corrected; directory removed |
+| Sections 3 and 8 implied frontend/contracts wiring and an active `WEB_ORIGINS` that do not exist yet | Section 3 annotated with its real status; `WEB_ORIGINS` is now genuinely consumed by a CORS plugin, covered by a test that fails if the configuration is widened to reflect any origin |
+| The repository had no `.gitattributes`, so line endings varied by contributor | Added `* text=auto eol=lf` and renormalised |
 
 ## 12. Staging deployment runbook
 
@@ -519,6 +601,9 @@ Supabase and update Render before restoring traffic.
 
 - The Supabase service-role key is server-only.
 - Authorization headers are redacted from Fastify logs.
+- CORS reflects only the exact origins in `WEB_ORIGINS`. The configuration never
+  echoes an arbitrary caller origin, which with `credentials: true` would let any
+  site read authenticated responses.
 - Foundation tables use RLS and deny direct anonymous/authenticated access.
 - Both Storage buckets are private and restrict image types and object sizes.
 - Feature releases default to disabled.
@@ -526,16 +611,30 @@ Supabase and update Render before restoring traffic.
 - CI uses local Supabase rather than hosted production credentials.
 - Database changes are additive and are deployed before dependent API/frontend code.
 - Secrets are supplied through process/hosting environments rather than tracked
-  files; Supabase temporary state, build outputs, and dependencies are excluded
-  from Git.
+  files; `.env` files, Supabase temporary state, build outputs, and dependencies
+  are excluded from Git.
+- The type gate covers test code as well as source, so a test cannot mask a
+  type error in the module it exercises.
 
 These controls establish a baseline; they do not replace feature-specific RLS,
 authenticated API authorization, signed URLs, content validation, rate limits,
 or final security headers.
 
-The repository does not currently define a general `.env` ignore rule. Do not
-create credential-bearing `.env` files until an explicit ignore convention is
-added and verified; the Task 0 local runbook above uses process variables.
+`.gitignore` ignores `.env` and every `.env.*` variant while re-including the
+tracked `*.env.example` templates:
+
+```gitignore
+.env
+.env.*
+!.env.example
+!.env.*.example
+```
+
+Verified by creating `.env`, `api/.env`, and `.env.production` and confirming
+`git check-ignore` matched all three while the three `.env.example` templates
+stayed tracked. A credential-bearing `.env` is now safe to create locally,
+though the runbook above still prefers process variables so nothing durable
+holds a service-role key.
 
 ## 15. Handoff to Task 1
 
@@ -543,12 +642,23 @@ Task 1 can begin from this foundation by adding username/password accounts and
 permanently fixed tenant/landlord roles, with administrators privately
 provisioned. It must preserve these Task 0 invariants:
 
-- Shared API schemas remain in `@rentdito/contracts`.
-- Server secrets never enter the frontend build.
+- Shared API schemas remain in `@rentdito/contracts`, and routes serialise
+  through them rather than hand-building matching objects.
+- Server secrets never enter the frontend build, and no real `.env` is committed.
 - New tables receive explicit grants, RLS, and pgTAP coverage.
 - Schema changes regenerate `api/src/generated/database.types.ts`.
 - New behavior deploys disabled and is accepted in staging before enablement.
 - Existing health and feature metadata contracts remain backward-compatible.
+- Every workspace keeps a `tsconfig.json` that type-checks `test/` and a
+  `tsconfig.build.json` that emits only `src/`.
+- A new workspace ships a lint config and a test script, or it is silently
+  skipped by the root gates.
+- Anything importing contracts at runtime keeps working from a clean checkout:
+  the `prepare` script and the contracts build inside `npm test` are load-bearing.
+
+When Task 1 adds account schemas to `@rentdito/contracts` and imports them as
+values, the ordering fix in section 5 is what keeps the test gate green. Do not
+remove it.
 
 Before Task 1 is released, finish the pending Task 0 staging deployment and smoke
 test described in section 12.

@@ -18,6 +18,7 @@ const supabase = createClient(
 
 const app = await buildApp({
   featureFlags: environment.featureFlags,
+  webOrigins: environment.webOrigins,
   databaseProbe: async () => {
     try {
       const { error } = await supabase

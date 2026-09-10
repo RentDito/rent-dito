@@ -38,6 +38,15 @@ class MemoryIdempotencyStore implements IdempotencyStore {
 const actorId = 'c836f08a-0b91-4ce7-b283-2b82477dd784';
 const key = 'dd1a64b4-a1eb-4e4d-9b84-90c246a891d2';
 
+/**
+ * `toMatchObject` takes no type argument, so the expected shape is declared
+ * here instead. That keeps each conflict assertion tied to the error's own
+ * declared fields rather than to a loose object literal.
+ */
+const expectedConflict = (
+  code: IdempotencyConflictError['code'],
+): Partial<IdempotencyConflictError> => ({ code, statusCode: 409 });
+
 describe('idempotent operations', () => {
   it('returns the stored response and runs matching work only once', async () => {
     const runIdempotent = createIdempotencyRunner(new MemoryIdempotencyStore());
@@ -67,10 +76,7 @@ describe('idempotent operations', () => {
         statusCode: 201,
         body: { id: 'resource-2' },
       })),
-    ).rejects.toMatchObject<Partial<IdempotencyConflictError>>({
-      code: 'IDEMPOTENCY_KEY_REUSED',
-      statusCode: 409,
-    });
+    ).rejects.toMatchObject(expectedConflict('IDEMPOTENCY_KEY_REUSED'));
   });
 
   it('rejects a concurrent retry while the matching request is still running', async () => {
@@ -83,10 +89,7 @@ describe('idempotent operations', () => {
         statusCode: 201,
         body: { id: 'resource-1' },
       })),
-    ).rejects.toMatchObject<Partial<IdempotencyConflictError>>({
-      code: 'IDEMPOTENCY_REQUEST_IN_PROGRESS',
-      statusCode: 409,
-    });
+    ).rejects.toMatchObject(expectedConflict('IDEMPOTENCY_REQUEST_IN_PROGRESS'));
   });
 
   it('releases a failed claim so a corrected retry can run', async () => {
