@@ -4,8 +4,8 @@
 
 **Last updated:** 2026-09-10
 
-**Working branch:** `fix/task-0-audit-remediation` (Task 0 remediation plus
-Task 1 Step 1; not yet merged to `main`)
+**State:** Step 1 and the Task 0 audit remediation are merged to `main` via
+PR #1. No work branch is open — start Step 2 from a fresh branch off `main`.
 
 **Authoritative plan:** section "Task 1" in
 `docs/superpowers/plans/2026-09-09-rentdito-production-mvp-feature-rollout.md`.
@@ -17,7 +17,7 @@ finished work.
 
 | Step | Description | Status |
 | --- | --- | --- |
-| 1 | Define the shared account contract | **Done** — committed `eb064ab` |
+| 1 | Define the shared account contract | **Done** — commit `6742420`, on `main` |
 | 2 | Write failing API and database authorization tests | Not started |
 | 3 | Run the tests and confirm the red state | Not started |
 | 4 | Create account tables, immutable-role enforcement, and RLS | Not started |
