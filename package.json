@@ -13,12 +13,13 @@
     "build": "npm run build -w @rentdito/contracts && npm run build -w @rentdito/api && npm run build -w @rentdito/frontend",
     "typecheck": "npm run typecheck --workspaces --if-present",
     "lint": "npm run lint --workspaces --if-present",
-    "test": "npm run test:run --workspaces --if-present",
+    "test": "npm run build:contracts && npm run test:run --workspaces --if-present",
     "db:start": "supabase start",
     "db:reset": "supabase db reset --local",
     "db:test": "supabase test db --local",
     "db:lint": "supabase db lint --local --level error",
-    "e2e": "npm run e2e -w @rentdito/frontend"
+    "e2e": "npm run e2e -w @rentdito/frontend",
+    "build:contracts": "npm run build -w @rentdito/contracts"
   },
   "devDependencies": {
     "jsdom": "^26.1.0",

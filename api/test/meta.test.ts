@@ -2,17 +2,20 @@ import { afterEach, describe, expect, it } from 'vitest';
 
 import { buildApp } from '../src/app.js';
 
+const ALLOWED_ORIGINS = ['https://rentdito.example'];
+
+const apps: Array<Awaited<ReturnType<typeof buildApp>>> = [];
+
+afterEach(async () => {
+  await Promise.all(apps.splice(0).map((app) => app.close()));
+});
+
 describe('platform metadata', () => {
-  const apps: Array<Awaited<ReturnType<typeof buildApp>>> = [];
-
-  afterEach(async () => {
-    await Promise.all(apps.splice(0).map((app) => app.close()));
-  });
-
   it('reports readiness when the database probe succeeds', async () => {
     const app = await buildApp({
       databaseProbe: async () => true,
       featureFlags: {},
+      webOrigins: ALLOWED_ORIGINS,
     });
     apps.push(app);
 
@@ -26,6 +29,7 @@ describe('platform metadata', () => {
     const app = await buildApp({
       databaseProbe: async () => false,
       featureFlags: {},
+      webOrigins: ALLOWED_ORIGINS,
     });
     apps.push(app);
 
@@ -42,6 +46,7 @@ describe('platform metadata', () => {
     const app = await buildApp({
       databaseProbe: async () => true,
       featureFlags: { marketplace: true },
+      webOrigins: ALLOWED_ORIGINS,
     });
     apps.push(app);
 
@@ -61,5 +66,43 @@ describe('platform metadata', () => {
         landlord_operations: false,
       },
     });
+  });
+});
+
+describe('cross-origin access', () => {
+  const buildCorsApp = async () =>
+    buildApp({
+      databaseProbe: async () => true,
+      featureFlags: {},
+      webOrigins: ALLOWED_ORIGINS,
+    });
+
+  it('allows a configured browser origin', async () => {
+    const app = await buildCorsApp();
+    apps.push(app);
+
+    const response = await app.inject({
+      method: 'GET',
+      url: '/v1/meta/features',
+      headers: { origin: 'https://rentdito.example' },
+    });
+
+    expect(response.statusCode).toBe(200);
+    expect(response.headers['access-control-allow-origin']).toBe(
+      'https://rentdito.example',
+    );
+  });
+
+  it('does not grant access to an unconfigured origin', async () => {
+    const app = await buildCorsApp();
+    apps.push(app);
+
+    const response = await app.inject({
+      method: 'GET',
+      url: '/v1/meta/features',
+      headers: { origin: 'https://attacker.example' },
+    });
+
+    expect(response.headers['access-control-allow-origin']).toBeUndefined();
   });
 });
