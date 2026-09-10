@@ -169,6 +169,38 @@ Two practical notes for that step:
   routes are missing and the database test fails because the tables are
   missing — not because of a typo or an unbuilt contracts package.
 
+### 5.1 Local environment and workflow gotchas
+
+Section 10 of the Task 0 document is the full local runbook. Three things are
+not in it and each cost time on first contact.
+
+**The first `supabase start` pulls several GB and may appear to hang.** The
+pinned CLI (2.117.0) wants image tags newer than another local Supabase project
+is likely to have cached, and anonymous pulls from `public.ecr.aws` throttle
+hard: a small image pulls in under a second while large layers sit at
+`Pulling fs layer` moving zero bytes for many minutes. Before concluding it is
+broken:
+
+- Confirm only **one** `supabase start` is running. Several concurrent
+  invocations against the same project contend and none of them progress —
+  containers are never created even though images are arriving.
+- Check real progress with `docker system df` rather than the CLI output. If
+  the image total is growing, it is working.
+- `supabase start -x gotrue,realtime,storage-api,imgproxy,kong,mailpit,postgrest,postgres-meta,studio,edge-runtime,logflare,vector,supavisor`
+  starts Postgres alone, which is all that `db:reset`, `db:lint`, and `db:test`
+  need, and avoids pulling the heaviest images entirely.
+- As a last resort, retag a cached patch-adjacent `supabase/postgres` image to
+  the tag the CLI asks for. Remove the alias afterwards, or a later start will
+  silently run the wrong image.
+
+**CI does not run on branch pushes.** The workflow triggers on `pull_request`
+and pushes to `main` only, so a pushed branch gets no verification until the
+pull request exists. Open the PR early.
+
+**Do not commit the Step 3 red state.** Steps 2 and 3 deliberately produce
+failing tests. Committing them turns CI red on the branch and on any PR. Keep
+the red local, and commit once Steps 4 and 5 make it green.
+
 ## 6. The release blocker
 
 **Step 9 cannot be completed, and neither can Task 0's own acceptance.**
