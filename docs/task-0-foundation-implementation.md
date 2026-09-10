@@ -543,6 +543,19 @@ WEB_ORIGINS=<exact-staging-vercel-origin>
 Confirm that Render uses Node `24.14.1`, runs the blueprint build/start commands,
 and reports `/healthz` as healthy. Leave every `FEATURE_*` variable `false`.
 
+The blueprint pins `plan: free` because Render's own default is the billed
+`starter` tier. Two consequences of that tier matter when you smoke-test:
+
+- **Free web services sleep after roughly 15 minutes idle.** The first request
+  after a quiet period pays a cold start of up to a minute, and `/healthz` adds
+  a database round-trip on top. A timeout on the first call is expected, not a
+  failure — retry before diagnosing.
+- **Free Supabase projects pause after about 7 days of inactivity.** Because
+  `/healthz` probes `public.audit_events`, a paused database makes the API
+  report unhealthy and can fail a Render deploy even though the API code is
+  fine. If the health check fails after a quiet week, wake the Supabase project
+  first and redeploy before looking anywhere else.
+
 ### 12.3 Vercel staging
 
 Import the repository into Vercel and configure the frontend project with:
