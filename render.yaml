@@ -2,6 +2,11 @@ services:
   - type: web
     name: rentdito-api
     runtime: node
+    # Explicit: Render's blueprint default is `starter`, which is billed. The
+    # staging foundation is meant to cost nothing, so the plan is pinned rather
+    # than inherited. Free instances sleep after ~15 minutes idle, so the first
+    # request after a quiet period pays a cold start before /healthz answers.
+    plan: free
     rootDir: .
     buildCommand: npm ci && npm run build -w @rentdito/contracts && npm run build -w @rentdito/api
     startCommand: npm run start -w @rentdito/api
