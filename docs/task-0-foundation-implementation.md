@@ -543,6 +543,13 @@ WEB_ORIGINS=<exact-staging-vercel-origin>
 Confirm that Render uses Node `24.14.1`, runs the blueprint build/start commands,
 and reports `/healthz` as healthy. Leave every `FEATURE_*` variable `false`.
 
+The blueprint's build command passes `--include=dev` deliberately. Render sets
+`NODE_ENV=production`, and npm omits `devDependencies` when it sees that, which
+strips `typescript` and `@types/node`. Without the flag the build fails with
+`TS2591: Cannot find name 'process'`. A plain `npm ci` installs 101 packages
+here against 636 for a full install — if a Render build log shows the smaller
+number, this is the cause. Runtime still uses only production dependencies.
+
 The blueprint pins `plan: free` because Render's own default is the billed
 `starter` tier. Two consequences of that tier matter when you smoke-test:
 

@@ -8,7 +8,12 @@ services:
     # request after a quiet period pays a cold start before /healthz answers.
     plan: free
     rootDir: .
-    buildCommand: npm ci && npm run build -w @rentdito/contracts && npm run build -w @rentdito/api
+    # `--include=dev` is required, not optional. NODE_ENV is set to production
+    # below, and npm omits devDependencies when it sees that — which strips
+    # typescript and @types/node, so `tsc` cannot resolve `process` and the
+    # build fails with TS2591. Runtime still uses only the production
+    # dependencies; the dev ones are needed solely to compile.
+    buildCommand: npm ci --include=dev && npm run build -w @rentdito/contracts && npm run build -w @rentdito/api
     startCommand: npm run start -w @rentdito/api
     healthCheckPath: /healthz
     envVars:
