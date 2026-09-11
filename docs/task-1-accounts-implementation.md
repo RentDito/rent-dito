@@ -147,9 +147,13 @@ Not yet present, and needed later:
 
 - `@supabase/supabase-js` is **not** declared in the frontend workspace. Step 6
   adds it (`^2.116.0`). It is already an API dependency.
-- `frontend/.env.example` contains only `VITE_API_BASE_URL`. Step 6 needs
-  `VITE_SUPABASE_URL` and the publishable key added there and to the root
-  `.env.example`.
+- `VITE_SUPABASE_URL` and `VITE_SUPABASE_PUBLISHABLE_KEY` are **already
+  declared** in `frontend/.env.example` and the root `.env.example`, and are
+  set on the Vercel project. Step 6 consumes them; it does not need to add
+  them. The name says *publishable* deliberately: the API's
+  `SUPABASE_ANON_KEY` is a different, legacy JWT, and the two must not be
+  unified. No `VITE_` variable may ever hold the service-role or `sb_secret_`
+  key — every one of them is compiled into the bundle.
 - `api/src/plugins/` contains only `idempotency.ts`. `supabase.ts`, `auth.ts`,
   and `errors.ts` are all still to be created.
 - `supabase/migrations/` contains only `202609090001_foundation.sql`. The
