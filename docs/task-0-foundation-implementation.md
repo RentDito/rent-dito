@@ -2,7 +2,7 @@
 
 **Document status:** Implementation handoff
 
-**Last updated:** 2026-09-10
+**Last updated:** 2026-09-11
 
 **Implementation branch:** merged to `main`; no `feat/*` branch remains.
 
@@ -12,9 +12,10 @@ audit-remediation commit that closed the gaps listed in section 11.1.
 
 ## 1. Status
 
-Task 0's code implementation is complete and committed. Its external release
-acceptance is still pending because the foundation has not yet been deployed to
-the staging Supabase, Render, and Vercel projects.
+Task 0's code implementation is complete and committed. Its staging release
+acceptance was completed on 2026-09-11; the foundation is deployed and verified
+on the staging Supabase, Render, and Vercel projects. Production remains
+untouched.
 
 | Area | Status | Evidence or remaining action |
 | --- | --- | --- |
@@ -26,7 +27,7 @@ the staging Supabase, Render, and Vercel projects.
 | Render configuration | Complete in code | API blueprint, health check, required variables, and disabled flags are committed. |
 | CI | Complete in code | Database, type, lint, unit, build, and browser gates run on pull requests and pushes to `main`. |
 | Local verification | Complete | The complete foundation gate passed on 2026-09-10; see section 11 for counts and section 11.1 for the audit fixes. |
-| Staging deployment and smoke test | Pending | Provision separate staging services, deploy, and verify the two public metadata endpoints. |
+| Staging deployment and smoke test | Complete | Verified 2026-09-11 against `rentdito-staging`, the Render API, and the Vercel SPA. `/healthz` returns `{"status":"ok","database":"ok"}`, `/v1/meta/features` returns nine `false` keys, CORS reflects only the Vercel origin, and the browser bundle carries no server secret. See section 6 of `docs/task-1-accounts-implementation.md`. |
 | Production deployment | Not started | Production remains intentionally untouched until staging acceptance. |
 
 Task 0 is a delivery foundation. It intentionally enables no production product
@@ -680,8 +681,11 @@ When Task 1 adds account schemas to `@rentdito/contracts` and imports them as
 values, the ordering fix in section 5 is what keeps the test gate green. Do not
 remove it.
 
-Before Task 1 is released, finish the pending Task 0 staging deployment and smoke
-test described in section 12.
+The Task 0 staging deployment and smoke test described in section 12 are
+complete as of 2026-09-11, so Task 1's Step 9 has working infrastructure to
+release onto. Section 6 of `docs/task-1-accounts-implementation.md` records the
+verified state, the hosted Supabase Auth hardening, and the auth-identifier
+domain decision.
 
 ## 16. Source documents
 
