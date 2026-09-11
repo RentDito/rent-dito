@@ -2,7 +2,7 @@
 
 **Document status:** Running implementation record — Task 1 is in progress.
 
-**Last updated:** 2026-09-10
+**Last updated:** 2026-09-11
 
 **State:** Step 1 and the Task 0 audit remediation are merged to `main` via
 PR #1. No work branch is open — start Step 2 from a fresh branch off `main`.
@@ -25,7 +25,7 @@ finished work.
 | 6 | Replace demo sessions with the production Auth provider | Not started |
 | 7 | Add frontend and browser account tests | Not started |
 | 8 | Run the account feature gate | Not started |
-| 9 | Release accounts | **Blocked** — see section 6 |
+| 9 | Release accounts | Not started — staging infrastructure is ready, see section 6 |
 | 10 | Commit accounts | Not started |
 
 Nothing in Task 1 is user-visible yet. `FEATURE_ACCOUNTS` remains `false`
@@ -201,25 +201,121 @@ pull request exists. Open the PR early.
 failing tests. Committing them turns CI red on the branch and on any PR. Keep
 the red local, and commit once Steps 4 and 5 make it green.
 
-## 6. The release blocker
+## 6. Staging environment: provisioned and verified
 
-**Step 9 cannot be completed, and neither can Task 0's own acceptance.**
+**The release blocker described in earlier revisions of this document is
+cleared.** Task 0's staging deployment and smoke test were completed on
+2026-09-11. Steps 2 through 8 remain pure code; Step 9 now has working
+infrastructure to release onto.
 
-Task 0 was never deployed. Its staging deployment and smoke test remain
-`Pending` in `docs/task-0-foundation-implementation.md` section 1, and section
-15 of that document states the staging deploy must be finished before Task 1 is
-released. Task 1's Step 9 then depends on the same infrastructure.
+Verified against the live environment on 2026-09-11:
 
-Concretely, none of the following has ever happened:
+| Check | Result |
+| --- | --- |
+| Render API `/healthz` | 200 `{"status":"ok","database":"ok"}` |
+| Render API `/v1/meta/features` | nine keys, all `false` |
+| Supabase migration `202609090001` | applied to `rentdito-staging`, local == remote |
+| Foundation tables | `audit_events`, `idempotency_records`, `upload_intents` present |
+| Private buckets | `listing-media`, `payment-proofs` present |
+| Vercel SPA | `/`, `/listings/property-1`, `/sign-in` all 200 |
+| CORS | reflects the Vercel origin, refuses all others |
+| Browser bundle | no service-role key, no JWT, no Supabase key |
 
-- The Fastify API has never booted on Render.
-- The foundation migration has never been applied to a hosted Supabase project.
-- The Vercel SPA has never been served.
+The Render build previously failed with `TS2591: Cannot find name 'process'`.
+That is fixed and merged (PR #5); see the `--include=dev` comment in
+`render.yaml`. A build log reporting ~101 packages instead of ~636 means the
+flag was lost again.
 
-Steps 2 through 8 are pure code and are safe to implement in the meantime. But
-the further Task 1 progresses, the more expensive a foundation-level surprise
-becomes. Section 12 of the Task 0 document is the runbook; it needs a human
-with Supabase, Render, and Vercel access.
+### 6.1 Supabase Auth configuration
+
+The hosted project shipped on stock defaults, which allowed public self-signup.
+That is now closed. Live values on `rentdito-staging`:
+
+| Setting | Value |
+| --- | --- |
+| `disable_signup` | `true` |
+| `external_anonymous_users_enabled` | `false` |
+| `external_phone_enabled` | `false` |
+| `password_min_length` | `12` |
+| `site_url` | the Vercel production origin |
+| `mfa_totp_enroll_enabled` / `verify_enabled` | `false` |
+| `external_email_enabled` | `true` |
+
+Confirmed by probing the live Auth API: `POST /auth/v1/signup` returns
+`signup_disabled`, anonymous signup returns `anonymous_provider_disabled`, and
+`POST /auth/v1/otp` returns `phone_provider_disabled` for phone and
+`signup_disabled` for magic link. The only remaining way to create a user is
+`auth.admin.createUser` behind the service-role key, which is what makes the
+API's role enforcement unbypassable.
+
+**Three traps here.**
+
+**Do not disable the Email provider.** `[auth.email].enable_signup` in
+`supabase/config.toml` is documented as a signup toggle but maps to
+`external_email_enabled` — the Email provider itself. Turning it off breaks
+`signInWithPassword` and therefore every login. `disable_signup` is the real
+gate and it is already set.
+
+**Do not run `supabase config push`.** It is all-or-nothing across api, auth,
+database, pooler, realtime and storage, and `config.toml` holds *local dev*
+values. Pushing it would set staging's `site_url` to `127.0.0.1:5173`, drop
+email throttling from `1m` to `1s`, and disable the Email provider. The
+remaining entries in `supabase config diff` are local-versus-staging
+differences that are correct to differ. Use field-level Management API calls,
+or the dashboard, for hosted Auth changes.
+
+**Disabling signup does not block `auth.admin.createUser`.** The service-role
+admin API bypasses it by design. If registration fails during Step 5, the cause
+is somewhere else — do not "fix" it by re-enabling signup.
+
+### 6.2 Supabase Auth rate limits share one IP
+
+`login()` calls `signInWithPassword` **server-side**, so every login in the
+product reaches Supabase from Render's single egress IP and shares one per-IP
+bucket. Live values are 30 per 5 minutes for `rate_limit_verify` and
+`rate_limit_otp`, so the effective app-wide ceiling is roughly six logins per
+minute regardless of user count.
+
+This is acceptable for staging and must be raised before production. It is
+separate from the per-client Fastify rate limiting the plan adds in Step 5,
+which is still required.
+
+Practical consequence for Step 7: a Playwright suite that creates and signs in
+several accounts can hit this ceiling. Intermittent 429s from Supabase during
+browser tests are an infrastructure limit, not a flaky test.
+
+Token refresh is unaffected — the plan stores the session in the browser via
+`supabaseBrowser.ts`, so refreshes come from each user's own IP against a
+separate limit of 150 per 5 minutes.
+
+### 6.3 Decision: the auth identifier domain
+
+Registration must generate an unguessable internal address, because RentDito
+accounts have no email at all — registration collects username, password,
+display name, and an optional Philippine mobile number.
+
+**Decided 2026-09-11:**
+
+- Domain: **`auth.rentdito.invalid`** in production,
+  **`auth.staging.rentdito.invalid`** in staging. `.invalid` is reserved by
+  RFC 6761 and never resolves, so these addresses can never receive mail even
+  if a later password-reset flow tries to send some. No domain purchase and no
+  DNS record is involved, so there is nothing to misconfigure.
+- Supplied as a **required** environment variable, `AUTH_IDENTIFIER_DOMAIN`,
+  parsed in `api/src/env.ts` like every other required value so a deploy that
+  forgets it fails closed at startup. It is already declared `sync: false` in
+  `render.yaml` and present in `.env.example`.
+
+**The local part must be unguessable and must never derive from the username.**
+An identifier such as `mateo_cruz@auth.rentdito.invalid` would let anyone
+knowing a username call GoTrue's `/token` endpoint directly with the
+publishable key, bypassing the API entirely — no Fastify rate limiting, and
+none of the uniform-failure disclosure protections that `loginRequestSchema`
+and `INVALID_CREDENTIALS` exist to provide. Generate it with
+`crypto.randomUUID()` or equivalent CSPRNG output.
+
+Email recovery is impossible by design, since no real address is ever
+collected. `admin:reset-password` is the only recovery path.
 
 ## 7. Verification
 
