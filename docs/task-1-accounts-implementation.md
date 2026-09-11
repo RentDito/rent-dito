@@ -5,7 +5,11 @@
 **Last updated:** 2026-09-11
 
 **State:** Step 1 and the Task 0 audit remediation are merged to `main` via
-PR #1. No work branch is open — start Step 2 from a fresh branch off `main`.
+PR #1. The staging environment was provisioned, hardened, and verified on
+2026-09-11 (PR #6) — **read section 6 before starting**, because it records
+configuration that is not visible anywhere in this repository and three ways to
+break the deployment by "fixing" something that is already correct. No work
+branch is open — start Step 2 from a fresh branch off `main`.
 
 **Authoritative plan:** section "Task 1" in
 `docs/superpowers/plans/2026-09-09-rentdito-production-mvp-feature-rollout.md`.
@@ -141,19 +145,14 @@ remediation. Check here before adding them again.
 | Audit trail for the admin CLI | `public.audit_events` exists from Task 0 with RLS and revoked client grants. |
 | `admin:create` / `admin:reset-password` scripts | Script **names** exist in `api/package.json` pointing at `dist/commands/adminAccounts.js`, which is not written yet. Running one today fails with a missing module. Step 5 creates the file. |
 | Auth pages to modify | `frontend/src/pages/auth/SignInPage.tsx` and `RegisterPage.tsx` exist, currently prototype-only. |
+| Auth identifier domain | **Decided and declared.** `AUTH_IDENTIFIER_DOMAIN` is in `render.yaml` as `sync: false`, is set on the Render staging service, and is in the root `.env.example`. Step 5 parses it in `api/src/env.ts` as a required value and uses it to build each account's synthetic Auth address. See section 6.3 for the choice, and for why the local part must come from a CSPRNG rather than the username. |
+| Browser Supabase configuration | **Done.** `VITE_SUPABASE_URL` and `VITE_SUPABASE_PUBLISHABLE_KEY` are declared in `frontend/.env.example` and the root `.env.example`, and are set on the Vercel project for production, preview, and development. Step 6 consumes them; it does not add them. The name says *publishable* deliberately — the API's `SUPABASE_ANON_KEY` is a different, legacy JWT, and the two must not be unified. No `VITE_` variable may ever hold the service-role or `sb_secret_` key, because every one of them is compiled into the bundle. |
 | Demo session machinery to remove | `frontend/src/app/demo/DemoSessionProvider.tsx`, `demoSessionContext.ts`, and `frontend/src/features/demo-session/` are still production code paths. Step 6 removes them from production use; test helpers may remain under `src/test`. |
 
 Not yet present, and needed later:
 
 - `@supabase/supabase-js` is **not** declared in the frontend workspace. Step 6
   adds it (`^2.116.0`). It is already an API dependency.
-- `VITE_SUPABASE_URL` and `VITE_SUPABASE_PUBLISHABLE_KEY` are **already
-  declared** in `frontend/.env.example` and the root `.env.example`, and are
-  set on the Vercel project. Step 6 consumes them; it does not need to add
-  them. The name says *publishable* deliberately: the API's
-  `SUPABASE_ANON_KEY` is a different, legacy JWT, and the two must not be
-  unified. No `VITE_` variable may ever hold the service-role or `sb_secret_`
-  key — every one of them is compiled into the bundle.
 - `api/src/plugins/` contains only `idempotency.ts`. `supabase.ts`, `auth.ts`,
   and `errors.ts` are all still to be created.
 - `supabase/migrations/` contains only `202609090001_foundation.sql`. The
